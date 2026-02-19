@@ -1,0 +1,11 @@
+[33m5d40a2b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Aggressively fix layout, images, and black hole artifacts
+[33m37fd09f[m Fix assets path, broken skills toggle, and optimize shader for chrome
+[33m9429d53[m Fix text visibility and restore high quality blackhole sim
+[33m2c165ea[m Fix asset paths by updating vite base config
+[33m39b625b[m Restore dist folder and apply optimization fixes
+[33m4fd6bb4[m Fix build and update site
+[33m5dd1fe2[m Fix gitignore for Node/Vite project
+[33ma57141a[m Fix build and stabilize Three.js for deployment
+[33m52795e0[m Add Vite config and stabilize build
+[33m3959292[m Fix Vite + Three.js build for Vercel
+[33m04ea961[m Final polish: Interactive skills, typing effect, and cinematic black hole

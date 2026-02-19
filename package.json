@@ -1,0 +1,25 @@
+{
+  "name": "black_hole---website",
+  "version": "1.0.0",
+  "description": "A high-performance, real-time General Relativity simulator using C++ and OpenGL Compute Shaders. This project simulates the complex spacetime curvature around black holes, including gravitational lensing, accretion disks, and frame-dragging.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshilparekh874/personal-site.git"
+  },
+  "bugs": {
+    "url": "https://github.com/harshilparekh874/personal-site/issues"
+  },
+  "homepage": "https://github.com/harshilparekh874/personal-site#readme",
+  "dependencies": {
+    "gsap": "^3.14.2",
+    "three": "0.159.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}
