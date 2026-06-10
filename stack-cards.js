@@ -175,12 +175,13 @@ export function initStackCards({
         return rectOverlapArea(area, targetRect) / cardArea;
     }
 
-    function canSnapToSlot(card) {
-        return !dockedCard || dockedCard === card;
-    }
-
     function isOverSlot(card) {
-        return canSnapToSlot(card) && overlapRatio(card, slotRect()) >= SNAP_THRESHOLD;
+        const overSlot = overlapRatio(card, slotRect()) >= SNAP_THRESHOLD;
+        if (!dockedCard || dockedCard === card) {
+            return overSlot;
+        }
+        const overDocked = overlapRatio(card, cardRect(dockedCard)) >= SNAP_THRESHOLD;
+        return overSlot || overDocked;
     }
 
     function messyLayout() {
@@ -376,7 +377,14 @@ export function initStackCards({
     }
 
     function dockCard(card) {
-        if (dockedCard) return;
+        const previous = dockedCard && dockedCard !== card ? dockedCard : null;
+
+        if (previous) {
+            undockCard(previous);
+            stopCardMotion(previous);
+            sendToBack(previous);
+            animateCardTo(previous, messyLayout(), 0.42);
+        }
 
         dockedCard = card;
         card.docked = true;
@@ -456,9 +464,7 @@ export function initStackCards({
 
         stopCardMotion(card);
         bringToFront(card);
-        if (canSnapToSlot(card)) {
-            showSlotOutline();
-        }
+        showSlotOutline();
 
         const rect = stage.getBoundingClientRect();
         dragOffsetX = e.clientX - rect.left - card.x;
