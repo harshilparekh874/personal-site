@@ -1,4 +1,5 @@
 import { initBackgroundRipple } from './background-ripple.js';
+import { initStackCloud } from './icon-cloud.js';
 import { RubikCube } from './rubikscube.js';
 import { initVortex } from './vortex.js';
 import { initWobbleCards } from './wobble-card.js';
@@ -26,6 +27,7 @@ initVortex('experience-vortex', {
     particleCount: 600,
 });
 initWobbleCards();
+initStackCloud();
 
 const header = document.getElementById('header');
 const navBar = document.querySelector('.nav-bar');
@@ -108,15 +110,3 @@ ScrollTrigger.batch('.project-card', {
     start: 'top 88%',
     batchMax: 2,
 });
-
-const showMoreBtn = document.getElementById('show-more-skills');
-const moreSkillsContainer = document.getElementById('more-skills-container');
-
-if (showMoreBtn && moreSkillsContainer) {
-    showMoreBtn.addEventListener('click', () => {
-        const isVisible = moreSkillsContainer.classList.toggle('visible');
-        showMoreBtn.textContent = isVisible ? 'Show less skills' : 'Show more skills';
-        ScrollTrigger.refresh();
-        siteRipple?.refresh?.();
-    });
-}

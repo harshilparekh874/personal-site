@@ -105,117 +105,16 @@
                 <div class="section-header reveal">
                     <p class="section-eyebrow">Skills</p>
                     <h2 class="section-heading">Technical stack.</h2>
-                    <p class="section-desc">Interactive skills keyboard — hover to explore.</p>
+                    <p class="section-desc">Click any icon to spin the cloud and explore a technology.</p>
                 </div>
-                <div class="keyboard-container">
-                    <div class="keyboard">
-                        <div class="key" data-skill="Python"
-                            data-desc="Data science, machine learning models, and automation scripting.">
-                            <img src="assets/skills/python.png" alt="Python">
-                            <span class="skill-name-overlay">Python</span>
-                        </div>
-                        <div class="key" data-skill="React"
-                            data-desc="Building modern web apps with hooks, state management, and performance optimization.">
-                            <img src="assets/skills/react.png" alt="React">
-                            <span class="skill-name-overlay">React</span>
-                        </div>
-                        <div class="key" data-skill="Java"
-                            data-desc="High-performance object-oriented programming for enterprise backend systems.">
-                            <img src="assets/skills/java.png" alt="Java">
-                            <span class="skill-name-overlay">Java</span>
-                        </div>
-                        <div class="key" data-skill="Node.js"
-                            data-desc="Scalable backend services and real-time APIs with Express and Socket.io.">
-                            <img src="assets/skills/nodejs.png" alt="Node.js">
-                            <span class="skill-name-overlay">Node.js</span>
-                        </div>
-                        <div class="key" data-skill="TypeScript"
-                            data-desc="Strongly typed JavaScript for robust and maintainable large-scale applications.">
-                            <img src="assets/skills/typescript.png" alt="TypeScript">
-                            <span class="skill-name-overlay">TypeScript</span>
-                        </div>
-                        <div class="key" data-skill="C/C#/C++"
-                            data-desc="Low-level systems programming and high-performance simulation kernels.">
-                            <img src="assets/skills/cv2.png" alt="C">
-                            <span class="skill-name-overlay">C++</span>
-                        </div>
-                        <div class="key" data-skill="Docker"
-                            data-desc="Containerization for consistent development and deployment workflows.">
-                            <img src="assets/skills/docker.png" alt="Docker">
-                            <span class="skill-name-overlay">Docker</span>
-                        </div>
-                        <div class="key" data-skill="AWS"
-                            data-desc="Cloud architecture, serverless functions, and scalable infrastructure management.">
-                            <img src="assets/skills/aws.png" alt="AWS">
-                            <span class="skill-name-overlay">AWS</span>
-                        </div>
-                        <div class="key" data-skill="SQL"
-                            data-desc="Complex query optimization and relational database design for high-load systems.">
-                            <img src="assets/skills/sql.png" alt="SQL">
-                            <span class="skill-name-overlay">SQL</span>
-                        </div>
-                        <div class="key" data-skill="MongoDB"
-                            data-desc="Flexible NoSQL database for storing data as documents.">
-                            <img src="assets/skills/mongodb.png" alt="MongoDB">
-                            <span class="skill-name-overlay">MongoDB</span>
-                        </div>
+                <div class="stack-cloud-layout reveal">
+                    <div class="stack-cloud-stage">
+                        <canvas id="stack-icon-cloud" class="stack-icon-cloud" data-size="560" aria-label="Interactive 3D stack icon cloud"></canvas>
                     </div>
-
-                    <div id="more-skills-container" class="more-skills">
-                        <div class="key" data-skill="HTML"
-                            data-desc="Structure user interfaces for web and Electron-based applications.">
-                            <img src="assets/skills/html.png" alt="HTML">
-                            <span class="skill-name-overlay">HTML</span>
-                        </div>
-                        <div class="key" data-skill="CSS"
-                            data-desc="Styling web pages and user interfaces with modern design principles.">
-                            <img src="assets/skills/css.png" alt="CSS">
-                            <span class="skill-name-overlay">CSS</span>
-                        </div>
-                        <div class="key" data-skill="Git/GitHub"
-                            data-desc="Version control, code reviews, and CI-friendly collaboration workflows.">
-                            <img src="assets/skills/git.png" alt="Git">
-                            <span class="skill-name-overlay">Git</span>
-                        </div>
-                        <div class="key" data-skill="Linux"
-                            data-desc="Shell scripting, system configuration, and developer-focused environments.">
-                            <img src="assets/skills/linux.png" alt="Linux">
-                            <span class="skill-name-overlay">Linux</span>
-                        </div>
-                        <div class="key" data-skill="SageMaker"
-                            data-desc="Amazon's cloud machine learning platform for building models at scale.">
-                            <img src="assets/skills/sagemaker.png" alt="SageMaker">
-                            <span class="skill-name-overlay">SageMaker</span>
-                        </div>
-                        <div class="key" data-skill="LangChain"
-                            data-desc="Building LLM-powered applications with tool usage, retrieval, and prompt orchestration.">
-                            <img src="assets/skills/langchain.png" alt="LangChain">
-                            <span class="skill-name-overlay">LangChain</span>
-                        </div>
-                        <div class="key" data-skill="JIRA"
-                            data-desc="Agile project management, sprint planning, and issue tracking.">
-                            <img src="assets/skills/jira.png" alt="JIRA">
-                            <span class="skill-name-overlay">JIRA</span>
-                        </div>
-                        <div class="key" data-skill="Huggingface"
-                            data-desc="Access and deploy state-of-the-art NLP models for various tasks.">
-                            <img src="assets/skills/huggingface.png" alt="Huggingface">
-                            <span class="skill-name-overlay">HuggingFace</span>
-                        </div>
-                        <div class="key" data-skill="FastAPI"
-                            data-desc="High-performance Python web framework for building APIs quickly and efficiently.">
-                            <img src="assets/skills/fastapi.png" alt="FastAPI">
-                            <span class="skill-name-overlay">FastAPI</span>
-                        </div>
-                        <div class="key" data-skill="Tensorflow"
-                            data-desc="Building deep learning models for computer vision, NLP, and reinforcement learning.">
-                            <img src="assets/skills/tensorflow.png" alt="Tensorflow">
-                            <span class="skill-name-overlay">TensorFlow</span>
-                        </div>
-                    </div>
-
-                    <div class="toggle-container">
-                        <button id="show-more-skills" class="btn-primary-outline">Show more skills</button>
+                    <div id="stack-cloud-detail" class="stack-cloud-detail">
+                        <p class="stack-cloud-detail__eyebrow">Technology</p>
+                        <h3 id="stack-cloud-detail-title" class="stack-cloud-detail__title">Explore the stack</h3>
+                        <p id="stack-cloud-detail-desc" class="stack-cloud-detail__desc">Click an icon in the cloud to spin it forward and read a short overview of how I use that tool across projects.</p>
                     </div>
                 </div>
             </div>

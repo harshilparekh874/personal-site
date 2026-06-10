@@ -612,92 +612,72 @@ a {
     color: var(--color-fog);
 }
 
-/* ── Skills Keyboard ── */
+/* ── Stack Icon Cloud ── */
 
-.keyboard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-32);
-}
-
-.keyboard,
-.more-skills {
+.stack-cloud-layout {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: var(--spacing-16);
-    width: 100%;
-    max-width: 720px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: var(--spacing-48);
+    align-items: center;
+    min-height: 620px;
 }
 
-.key {
+.stack-cloud-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 560px;
+}
+
+.stack-icon-cloud {
+    width: min(100%, 560px);
+    height: auto;
     aspect-ratio: 1;
+    cursor: grab;
+    touch-action: none;
+}
+
+.stack-icon-cloud:active {
+    cursor: grabbing;
+}
+
+.stack-cloud-detail {
     background: var(--color-void-black);
     border: 1px solid var(--color-graphite-rail);
     border-radius: var(--radius-cards);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    padding: var(--spacing-20);
-    transition: border-color 0.15s ease, transform 0.2s ease;
+    padding: var(--spacing-32);
+    min-height: 220px;
+    opacity: 0.72;
+    transition: opacity 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
-.key img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: grayscale(1) brightness(0.7);
-    transition: filter 0.15s ease, opacity 0.15s ease;
-}
-
-.skill-name-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-commitmono);
-    font-size: var(--text-caption);
-    color: var(--color-frost);
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-    padding: var(--spacing-8);
-}
-
-.key:hover {
-    border-color: var(--color-electric-blue);
+.stack-cloud-detail.is-active {
+    opacity: 1;
+    border-color: var(--color-smoke);
     transform: translateY(-2px);
 }
 
-.key:hover img {
-    filter: none;
-    opacity: 1;
+.stack-cloud-detail__eyebrow {
+    font-family: var(--font-commitmono);
+    font-size: var(--text-caption);
+    color: var(--color-electric-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--spacing-12);
 }
 
-.key:hover .skill-name-overlay {
-    opacity: 0;
+.stack-cloud-detail__title {
+    font-family: var(--font-abcfavorit);
+    font-size: var(--text-heading);
+    line-height: var(--leading-heading);
+    color: var(--color-pure-white);
+    margin-bottom: var(--spacing-16);
 }
 
-.more-skills {
-    display: none;
-}
-
-.more-skills.visible {
-    display: grid;
-    animation: slideDown 0.2s ease forwards;
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.toggle-container {
-    margin-top: var(--spacing-8);
+.stack-cloud-detail__desc {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-fog);
 }
 
 /* ── Projects ── */
@@ -1012,9 +992,18 @@ html.js-ready .reveal {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .keyboard,
-    .more-skills {
-        grid-template-columns: repeat(4, 1fr);
+    .stack-cloud-layout {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-32);
+        min-height: auto;
+    }
+
+    .stack-cloud-stage {
+        min-height: 480px;
+    }
+
+    .stack-icon-cloud {
+        width: min(100%, 480px);
     }
 }
 
@@ -1067,9 +1056,12 @@ html.js-ready .reveal {
         gap: var(--spacing-40);
     }
 
-    .keyboard,
-    .more-skills {
-        grid-template-columns: repeat(3, 1fr);
+    .stack-cloud-stage {
+        min-height: 400px;
+    }
+
+    .stack-icon-cloud {
+        width: min(100%, 400px);
     }
 
     .projects-grid {
@@ -1086,9 +1078,8 @@ html.js-ready .reveal {
 }
 
 @media (max-width: 480px) {
-    .keyboard,
-    .more-skills {
-        grid-template-columns: repeat(2, 1fr);
+    .stack-icon-cloud {
+        width: min(100%, 320px);
     }
 
     .hero-headline {
