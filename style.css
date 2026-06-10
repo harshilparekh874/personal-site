@@ -616,22 +616,23 @@ a {
 
 .stack-cloud-layout {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-40);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+    gap: var(--spacing-32);
     align-items: center;
-    justify-items: center;
 }
 
 .stack-cloud-stage {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
-    min-height: min(1120px, 100vw);
+    min-height: min(780px, 72vw);
+    margin-left: -28px;
+    overflow: visible;
 }
 
 .stack-icon-cloud {
-    width: min(100%, 1120px);
+    width: min(100%, 760px);
     height: auto;
     aspect-ratio: 1;
     cursor: grab;
@@ -648,7 +649,7 @@ a {
     border-radius: var(--radius-cards);
     padding: var(--spacing-32);
     min-height: 220px;
-    width: min(100%, 640px);
+    width: 100%;
     opacity: 0.72;
     transition: opacity 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
@@ -994,12 +995,18 @@ html.js-ready .reveal {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .stack-cloud-layout {
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: var(--spacing-24);
+    }
+
     .stack-cloud-stage {
-        min-height: min(960px, 100vw);
+        min-height: min(640px, 68vw);
+        margin-left: -16px;
     }
 
     .stack-icon-cloud {
-        width: min(100%, 960px);
+        width: min(100%, 620px);
     }
 }
 
@@ -1052,12 +1059,23 @@ html.js-ready .reveal {
         gap: var(--spacing-40);
     }
 
+    .stack-cloud-layout {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
     .stack-cloud-stage {
-        min-height: min(800px, 100vw);
+        justify-content: center;
+        min-height: min(560px, 92vw);
+        margin-left: 0;
     }
 
     .stack-icon-cloud {
-        width: min(100%, 800px);
+        width: min(100%, 560px);
+    }
+
+    .stack-cloud-detail {
+        max-width: 640px;
     }
 
     .projects-grid {
@@ -1075,7 +1093,7 @@ html.js-ready .reveal {
 
 @media (max-width: 480px) {
     .stack-icon-cloud {
-        width: min(100%, 640px);
+        width: min(100%, 420px);
     }
 
     .hero-headline {
