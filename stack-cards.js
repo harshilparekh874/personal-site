@@ -32,14 +32,14 @@ const STACK_ITEMS = [
     { name: 'TensorFlow', image: localSkillImage('tensorflow.png'), description: 'Deep learning training, inference pipelines, and production ML graphs.' },
 ];
 
-const CARD_W_DEFAULT = 156;
-const CARD_H_DEFAULT = 228;
-const SPREAD_X = 210;
-const SPREAD_Y = 120;
+const CARD_W_DEFAULT = 200;
+const CARD_H_DEFAULT = 292;
+const SPREAD_X = 260;
+const SPREAD_Y = 150;
 const THROW_SPEED = 0.012;
 const MAX_THROW_SPEED = 28;
 const THROW_THRESHOLD = 420;
-const SNAP_THRESHOLD = 0.5;
+const SNAP_THRESHOLD = 0.25;
 
 function shuffle(array) {
     const copy = [...array];
@@ -151,8 +151,9 @@ export function initStackCards({
         slotFrame.style.height = `${cardH}px`;
         slotFrame.style.transform = `translate3d(${layout.x}px, ${layout.y}px, 0)`;
         slotEl.style.setProperty('--slot-x', `${layout.x}px`);
-        slotEl.style.setProperty('--slot-y', `${layout.y + cardH + 16}px`);
+        slotEl.style.setProperty('--slot-y', `${layout.y + cardH + 24}px`);
         slotEl.style.setProperty('--slot-w', `${cardW}px`);
+        slotEl.style.setProperty('--slot-detail-w', `${Math.max(cardW + 80, 320)}px`);
         return layout;
     }
 
