@@ -175,8 +175,12 @@ export function initStackCards({
         return rectOverlapArea(area, targetRect) / cardArea;
     }
 
+    function canSnapToSlot(card) {
+        return !dockedCard || dockedCard === card;
+    }
+
     function isOverSlot(card) {
-        return overlapRatio(card, slotRect()) >= SNAP_THRESHOLD;
+        return canSnapToSlot(card) && overlapRatio(card, slotRect()) >= SNAP_THRESHOLD;
     }
 
     function messyLayout() {
@@ -250,8 +254,12 @@ export function initStackCards({
         return cards.some((card) => card.offScreen);
     }
 
+    function hasReturnableCards() {
+        return hasOffScreenCards() || !!dockedCard;
+    }
+
     function updateReturnButton() {
-        const show = hasOffScreenCards();
+        const show = hasReturnableCards();
         if (show === returnBtnVisible) return;
 
         returnBtnVisible = show;
@@ -363,21 +371,19 @@ export function initStackCards({
         if (dockedCard === card) {
             dockedCard = null;
             hideSlotDetail();
+            updateReturnButton();
         }
     }
 
     function dockCard(card) {
-        if (dockedCard && dockedCard !== card) {
-            undockCard(dockedCard);
-            sendToBack(dockedCard);
-            animateCardTo(dockedCard, messyLayout(), 0.42);
-        }
+        if (dockedCard) return;
 
         dockedCard = card;
         card.docked = true;
         card.offScreen = false;
         card.el.classList.add('is-docked');
         bringToFront(card);
+        updateReturnButton();
 
         const layout = slotLayout();
         animateCardTo(card, layout, 0.38).eventCallback('onComplete', () => {
@@ -450,7 +456,9 @@ export function initStackCards({
 
         stopCardMotion(card);
         bringToFront(card);
-        showSlotOutline();
+        if (canSnapToSlot(card)) {
+            showSlotOutline();
+        }
 
         const rect = stage.getBoundingClientRect();
         dragOffsetX = e.clientX - rect.left - card.x;
@@ -573,7 +581,11 @@ export function initStackCards({
         e.stopPropagation();
 
         const thrownOff = cards.filter((card) => card.offScreen);
-        if (!thrownOff.length || isReturning) return;
+        const toReturn = [...thrownOff];
+        if (dockedCard && !toReturn.includes(dockedCard)) {
+            toReturn.push(dockedCard);
+        }
+        if (!toReturn.length || isReturning) return;
 
         isReturning = true;
         returnBtn.style.pointerEvents = 'none';
@@ -582,11 +594,11 @@ export function initStackCards({
             undockCard(dockedCard);
         }
 
-        thrownOff.forEach((card) => stopCardMotion(card));
+        toReturn.forEach((card) => stopCardMotion(card));
 
-        const onPile = cards.filter((card) => !card.offScreen);
+        const onPile = cards.filter((card) => !toReturn.includes(card));
         const onPileSorted = [...onPile].sort((a, b) => a.zIndex - b.zIndex);
-        const returnedSorted = shuffle(thrownOff);
+        const returnedSorted = shuffle(toReturn);
 
         // Returned cards go to the bottom; cards still on the pile keep their positions.
         const ordered = [...returnedSorted, ...onPileSorted];
