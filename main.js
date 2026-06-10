@@ -1,5 +1,5 @@
 import { initBackgroundRipple } from './background-ripple.js';
-import { initStackCloud } from './icon-cloud.js';
+import { initStackCards } from './stack-cards.js';
 import { RubikCube } from './rubikscube.js';
 import { initVortex } from './vortex.js';
 import { initWobbleCards } from './wobble-card.js';
@@ -27,7 +27,7 @@ initVortex('experience-vortex', {
     particleCount: 600,
 });
 initWobbleCards();
-initStackCloud();
+initStackCards();
 
 const header = document.getElementById('header');
 const navBar = document.querySelector('.nav-bar');
