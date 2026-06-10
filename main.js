@@ -4,6 +4,7 @@ import { RubikCube } from './rubikscube.js';
 import { initVortex } from './vortex.js';
 import { initWobbleCards } from './wobble-card.js';
 import { initSpotlight } from './spotlight.js';
+import { initLamp } from './lamp.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -18,6 +19,7 @@ try {
     console.error('Rubik cube failed to initialize:', error);
 }
 initSpotlight('hero-spotlight');
+initLamp('projects-lamp');
 initVortex('experience-vortex', {
     baseHue: 142,
     rangeHue: 36,

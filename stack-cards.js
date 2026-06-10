@@ -96,7 +96,6 @@ export function initStackCards({
     let isReturning = false;
     let dockedCard = null;
     let slotTargetActive = false;
-
     function cardSize() {
         const sample = cards[0]?.el;
         if (!sample) {
@@ -264,13 +263,7 @@ export function initStackCards({
         if (show === returnBtnVisible) return;
 
         returnBtnVisible = show;
-        gsap.killTweensOf(returnBtn);
-        gsap.to(returnBtn, {
-            opacity: show ? 1 : 0,
-            duration: 0.3,
-            ease: 'power2.out',
-        });
-        returnBtn.style.pointerEvents = show ? 'auto' : 'none';
+        returnBtn.classList.toggle('is-visible', show);
         returnBtn.tabIndex = show ? 0 : -1;
     }
 
@@ -312,6 +305,9 @@ export function initStackCards({
             overwrite: true,
             onUpdate: () => {
                 applyTransform(card);
+                updateLabelReveal();
+            },
+            onComplete: () => {
                 updateLabelReveal();
             },
         });
@@ -636,8 +632,6 @@ export function initStackCards({
 
     returnBtn.addEventListener('click', returnCards);
     returnBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
-    gsap.set(returnBtn, { opacity: 0 });
-    returnBtn.style.pointerEvents = 'none';
 
     const onResize = () => {
         layoutSlotFrame();
