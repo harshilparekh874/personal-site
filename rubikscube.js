@@ -61,11 +61,12 @@ const SOLVE_MOVE_DURATION = 0.4;
 const MOVE_EASE = 'power2.inOut';
 const MOVE_SETTLE = 0.05;
 
-const DRAG_ROTATE_SPEED = 0.0065;
-const DRAG_TILT_SPEED = 0.0045;
-const MAX_TILT = 0.42;
-const MOMENTUM_DECAY = 4.8;
-const SPIN_STOP_THRESHOLD = 0.0004;
+const DRAG_ROTATE_SPEED = 0.0055;
+const MOMENTUM_DECAY = 5.2;
+const SPIN_STOP_THRESHOLD = 0.00035;
+const MAX_ORBIT_VELOCITY = 2.8;
+const MIN_PHI = 0.05;
+const MAX_PHI = Math.PI - 0.05;
 
 const SCRAMBLE_MOVES = [
     'R', "R'", 'R2', 'L', "L'", 'L2',
@@ -206,9 +207,10 @@ export class RubikCube {
         this._autoSpinWaitingSettle = false;
         this._autoSpinArmTime = null;
         this._autoSpinDelay = 1800;
-        this.spinVelocity = { x: 0, y: 0 };
+        this.spinVelocity = { theta: 0, phi: 0 };
         this._pointer = { lastX: 0, lastY: 0 };
         this._velocitySamples = [];
+        this._activeLayerTween = null;
         this.activePivot = null;
         this.logicalCube = null;
         this.solverApi = null;
@@ -247,10 +249,17 @@ export class RubikCube {
         this.renderer.toneMappingExposure = 1.45;
         this.container.appendChild(this.renderer.domElement);
 
-        this.idleGroup = new THREE.Group();
         this.cubeGroup = new THREE.Group();
-        this.idleGroup.add(this.cubeGroup);
-        this.scene.add(this.idleGroup);
+        this.scene.add(this.cubeGroup);
+
+        this.orbitRadius = DEFAULT_CAMERA_POSITION.length();
+        this.orbit = {
+            theta: Math.atan2(DEFAULT_CAMERA_POSITION.x, DEFAULT_CAMERA_POSITION.z),
+            phi: Math.acos(
+                THREE.MathUtils.clamp(DEFAULT_CAMERA_POSITION.y / this.orbitRadius, -1, 1)
+            ),
+        };
+        this._updateCamera();
 
         const pmrem = new THREE.PMREMGenerator(this.renderer);
         this.envMap = pmrem.fromScene(new RoomEnvironment(), 0.12).texture;
@@ -264,11 +273,30 @@ export class RubikCube {
         this.renderer.setAnimationLoop(() => this._renderFrame());
     }
 
+    _updateCamera() {
+        const { theta, phi } = this.orbit;
+        const r = this.orbitRadius;
+        this.camera.position.set(
+            r * Math.sin(phi) * Math.sin(theta),
+            r * Math.cos(phi),
+            r * Math.sin(phi) * Math.cos(theta)
+        );
+        this.camera.lookAt(0, 0, 0);
+    }
+
+    _clampOrbitPhi(phi) {
+        return THREE.MathUtils.clamp(phi, MIN_PHI, MAX_PHI);
+    }
+
+    _clampOrbitVelocity(velocity) {
+        return THREE.MathUtils.clamp(velocity, -MAX_ORBIT_VELOCITY, MAX_ORBIT_VELOCITY);
+    }
+
     _renderFrame() {
         const coasting =
             !this.isDragging &&
-            (Math.abs(this.spinVelocity.x) > SPIN_STOP_THRESHOLD ||
-                Math.abs(this.spinVelocity.y) > SPIN_STOP_THRESHOLD);
+            (Math.abs(this.spinVelocity.theta) > SPIN_STOP_THRESHOLD ||
+                Math.abs(this.spinVelocity.phi) > SPIN_STOP_THRESHOLD);
 
         this.orbitCoasting = coasting;
 
@@ -293,12 +321,7 @@ export class RubikCube {
             !this.isAnimating &&
             !this.sequenceActive
         ) {
-            this.idleGroup.rotation.y += this.autoSpinSpeed * delta;
-            this.idleGroup.rotation.x = THREE.MathUtils.lerp(
-                this.idleGroup.rotation.x,
-                0,
-                delta * 2.5
-            );
+            this.cubeGroup.rotation.y += this.autoSpinSpeed * delta;
         }
 
         this._tickAutoSpinResume();
@@ -313,23 +336,20 @@ export class RubikCube {
     _applySpinMomentum(delta) {
         if (this.isDragging) return;
 
-        let { x, y } = this.spinVelocity;
-        if (Math.abs(x) <= SPIN_STOP_THRESHOLD && Math.abs(y) <= SPIN_STOP_THRESHOLD) {
-            this.spinVelocity.x = 0;
-            this.spinVelocity.y = 0;
+        let { theta, phi } = this.spinVelocity;
+        if (Math.abs(theta) <= SPIN_STOP_THRESHOLD && Math.abs(phi) <= SPIN_STOP_THRESHOLD) {
+            this.spinVelocity.theta = 0;
+            this.spinVelocity.phi = 0;
             return;
         }
 
-        this.idleGroup.rotation.y += y * delta;
-        this.idleGroup.rotation.x = THREE.MathUtils.clamp(
-            this.idleGroup.rotation.x + x * delta,
-            -MAX_TILT,
-            MAX_TILT
-        );
+        this.orbit.theta += theta * delta;
+        this.orbit.phi = this._clampOrbitPhi(this.orbit.phi + phi * delta);
+        this._updateCamera();
 
         const decay = Math.exp(-MOMENTUM_DECAY * delta);
-        this.spinVelocity.x *= decay;
-        this.spinVelocity.y *= decay;
+        this.spinVelocity.theta *= decay;
+        this.spinVelocity.phi *= decay;
     }
 
     _scheduleAutoSpin(delay = 1800) {
@@ -388,8 +408,8 @@ export class RubikCube {
         this.isDragging = true;
         this.autoSpinEnabled = false;
         this.orbitCoasting = false;
-        this.spinVelocity.x = 0;
-        this.spinVelocity.y = 0;
+        this.spinVelocity.theta = 0;
+        this.spinVelocity.phi = 0;
         this._velocitySamples.length = 0;
         this._pointer.lastX = e.clientX;
         this._pointer.lastY = e.clientY;
@@ -407,12 +427,9 @@ export class RubikCube {
         this._pointer.lastX = e.clientX;
         this._pointer.lastY = e.clientY;
 
-        this.idleGroup.rotation.y += dx * DRAG_ROTATE_SPEED;
-        this.idleGroup.rotation.x = THREE.MathUtils.clamp(
-            this.idleGroup.rotation.x + dy * DRAG_TILT_SPEED,
-            -MAX_TILT,
-            MAX_TILT
-        );
+        this.orbit.theta -= dx * DRAG_ROTATE_SPEED;
+        this.orbit.phi = this._clampOrbitPhi(this.orbit.phi + dy * DRAG_ROTATE_SPEED);
+        this._updateCamera();
 
         this._velocitySamples.push({ dx, dy, t: performance.now() });
         if (this._velocitySamples.length > 8) {
@@ -430,6 +447,7 @@ export class RubikCube {
         this.isDragging = false;
         this.container.classList.remove('is-dragging');
         this._applyReleaseVelocity();
+        this._validateCubeIntegrity();
 
         if (!this.sequenceActive && !this.isAnimating) {
             this._scheduleAutoSpin();
@@ -462,8 +480,74 @@ export class RubikCube {
             }
         }
 
-        this.spinVelocity.y = (sumDx / dt) * DRAG_ROTATE_SPEED * 0.022;
-        this.spinVelocity.x = (sumDy / dt) * DRAG_TILT_SPEED * 0.018;
+        this.spinVelocity.theta = this._clampOrbitVelocity(
+            -(sumDx / dt) * DRAG_ROTATE_SPEED * 0.02
+        );
+        this.spinVelocity.phi = this._clampOrbitVelocity(
+            (sumDy / dt) * DRAG_ROTATE_SPEED * 0.02
+        );
+    }
+
+    _validateCubeIntegrity() {
+        let needsRepair = false;
+
+        for (const cubelet of this.cubelets) {
+            if (!cubelet.parent) {
+                needsRepair = true;
+                break;
+            }
+
+            const { x, y, z } = cubelet.userData;
+            if (Math.abs(x) > 1 || Math.abs(y) > 1 || Math.abs(z) > 1) {
+                needsRepair = true;
+                break;
+            }
+
+            const dist = cubelet.position.length();
+            if (Math.abs(dist - Math.hypot(x * SPACING, y * SPACING, z * SPACING)) > 0.05) {
+                needsRepair = true;
+                break;
+            }
+        }
+
+        if (needsRepair) {
+            this._repairCubeStructure();
+        }
+    }
+
+    _repairCubeStructure() {
+        this._activeLayerTween?.kill();
+        this._activeLayerTween = null;
+        this._safeEmptyPivot(true);
+
+        this.cubeGroup.updateMatrixWorld(true);
+        _invParent.copy(this.cubeGroup.matrixWorld).invert();
+
+        for (const cubelet of this.cubelets) {
+            if (cubelet.parent !== this.cubeGroup) {
+                this.cubeGroup.attach(cubelet);
+            }
+            this._snapCubelet(cubelet);
+        }
+
+        this.cubeGroup.rotation.set(0, 0, 0);
+        this.cubeGroup.updateMatrixWorld(true);
+        this._rebuildLayerIndex();
+    }
+
+    _rebuildLayerIndex() {
+        this.layerIndex = {
+            x: { '-1': [], 0: [], 1: [] },
+            y: { '-1': [], 0: [], 1: [] },
+            z: { '-1': [], 0: [], 1: [] },
+        };
+
+        for (const cubelet of this.cubelets) {
+            const { x, y, z } = cubelet.userData;
+            this.layerIndex.x[x].push(cubelet);
+            this.layerIndex.y[y].push(cubelet);
+            this.layerIndex.z[z].push(cubelet);
+        }
     }
 
     _addStudioLights() {
@@ -537,9 +621,9 @@ export class RubikCube {
         cubelet.getWorldPosition(_worldPos);
         _localPos.copy(_worldPos).applyMatrix4(_invParent);
 
-        const x = Math.round(_localPos.x / SPACING);
-        const y = Math.round(_localPos.y / SPACING);
-        const z = Math.round(_localPos.z / SPACING);
+        const x = THREE.MathUtils.clamp(Math.round(_localPos.x / SPACING), -1, 1);
+        const y = THREE.MathUtils.clamp(Math.round(_localPos.y / SPACING), -1, 1);
+        const z = THREE.MathUtils.clamp(Math.round(_localPos.z / SPACING), -1, 1);
 
         this._reindexCubelet(cubelet, x, y, z);
         cubelet.position.set(x * SPACING, y * SPACING, z * SPACING);
@@ -553,26 +637,47 @@ export class RubikCube {
         cubelet.updateMatrix();
     }
 
+    _safeEmptyPivot(snapCubelets = false) {
+        if (!this.activePivot) return;
+
+        const stranded = [...this.activePivot.children];
+        if (stranded.length) {
+            this.activePivot.updateMatrixWorld(true);
+            this.cubeGroup.updateMatrixWorld(true);
+            _invParent.copy(this.cubeGroup.matrixWorld).invert();
+
+            for (const cubelet of stranded) {
+                this.cubeGroup.attach(cubelet);
+                if (snapCubelets) {
+                    this._snapCubelet(cubelet);
+                }
+            }
+        }
+
+        this.activePivot.rotation.set(0, 0, 0);
+        if (this.activePivot.parent) {
+            this.activePivot.parent.remove(this.activePivot);
+        }
+    }
+
     _getPivot() {
         if (!this.activePivot) {
             this.activePivot = new THREE.Group();
             this.activePivot.name = 'layer-pivot';
         }
+
+        this._safeEmptyPivot(false);
         this.activePivot.rotation.set(0, 0, 0);
-        this.activePivot.clear();
+
         if (!this.activePivot.parent) {
             this.cubeGroup.add(this.activePivot);
         }
+
         return this.activePivot;
     }
 
     _releasePivot() {
-        if (!this.activePivot) return;
-        this.activePivot.clear();
-        this.activePivot.rotation.set(0, 0, 0);
-        if (this.activePivot.parent) {
-            this.activePivot.parent.remove(this.activePivot);
-        }
+        this._safeEmptyPivot(false);
     }
 
     _finalizeLayerRotation(targets) {
@@ -622,13 +727,16 @@ export class RubikCube {
         }
 
         return new Promise((resolve) => {
-            gsap.to(pivot.rotation, {
+            this._activeLayerTween?.kill();
+
+            this._activeLayerTween = gsap.to(pivot.rotation, {
                 [axisKey]: angle,
                 duration,
                 ease,
                 overwrite: true,
                 onComplete: () => {
                     pivot.rotation[axisKey] = angle;
+                    this._activeLayerTween = null;
                     requestAnimationFrame(() => {
                         this._finalizeLayerRotation(targets);
                         resolve();
@@ -650,6 +758,7 @@ export class RubikCube {
             }
         }
         this.isAnimating = false;
+        this._validateCubeIntegrity();
     }
 
     scramble(count = 22) {
@@ -696,7 +805,10 @@ export class RubikCube {
         this.sequenceActive = true;
         this.shuffleBtn.disabled = true;
         this.autoSpinEnabled = false;
+        this.spinVelocity.theta = 0;
+        this.spinVelocity.phi = 0;
         this._cancelAutoSpinSchedule();
+        this._validateCubeIntegrity();
 
         try {
             const { RubiksCube, solveCube } = await this._ensureSolver();
