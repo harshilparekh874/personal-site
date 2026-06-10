@@ -45,9 +45,9 @@ main {
     width: 100%;
     z-index: 0;
     pointer-events: none;
-    --ripple-base: 0.16;
-    --ripple-peak: 0.42;
-    --ripple-hover: 0.38;
+    --ripple-base: 0.22;
+    --ripple-peak: 0.72;
+    --ripple-hover: 0.62;
 }
 
 .ripple-grid {
@@ -60,19 +60,19 @@ main {
 }
 
 .ripple-cell {
-    border: 0.5px solid rgba(255, 255, 255, 0.07);
+    border: 0.5px solid rgba(255, 255, 255, 0.09);
     background: #000000;
     opacity: var(--ripple-base);
-    transition: opacity 0.12s ease, background-color 0.12s ease, border-color 0.12s ease;
+    transition: opacity 0.12s ease, background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
     pointer-events: none;
-    box-shadow: inset 0 0 40px 1px rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0 0 40px 1px rgba(255, 255, 255, 0.03);
 }
 
 .ripple-cell--hover {
     opacity: var(--ripple-hover);
-    background: rgba(255, 255, 255, 0.055);
-    border-color: rgba(255, 255, 255, 0.14);
-    box-shadow: inset 0 0 28px 1px rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: inset 0 0 32px 2px rgba(255, 255, 255, 0.12);
 }
 
 .ripple-cell--animate {
@@ -82,12 +82,21 @@ main {
 @keyframes cell-ripple {
     0% {
         opacity: var(--ripple-base);
+        background-color: #000000;
+        border-color: rgba(255, 255, 255, 0.09);
+        box-shadow: inset 0 0 40px 1px rgba(255, 255, 255, 0.03);
     }
     50% {
         opacity: var(--ripple-peak);
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.32);
+        box-shadow: inset 0 0 36px 2px rgba(255, 255, 255, 0.16);
     }
     100% {
         opacity: var(--ripple-base);
+        background-color: #000000;
+        border-color: rgba(255, 255, 255, 0.09);
+        box-shadow: inset 0 0 40px 1px rgba(255, 255, 255, 0.03);
     }
 }
 
