@@ -145,12 +145,17 @@ function iconImageUrl(item) {
 export function initIconCloud(canvas, items, { onSelect } = {}) {
     if (!canvas || !items.length) return null;
 
-    const size = Number(canvas.dataset.size) || 560;
+    const size = Number(canvas.dataset.size) || 1120;
     canvas.width = size;
     canvas.height = size;
 
+    const sphereRadius = size * (100 / 560);
+    const iconSize = Math.round(size * (48 / 560));
+    const iconHalf = iconSize / 2;
+    const selectRing = iconHalf + 4;
+
     const ctx = canvas.getContext('2d');
-    const iconPositions = fibonacciSphere(items.length);
+    const iconPositions = fibonacciSphere(items.length, sphereRadius);
     const iconCanvases = [];
     const imagesLoaded = new Array(items.length).fill(false);
 
@@ -165,8 +170,8 @@ export function initIconCloud(canvas, items, { onSelect } = {}) {
 
     items.forEach((item, index) => {
         const offscreen = document.createElement('canvas');
-        offscreen.width = 48;
-        offscreen.height = 48;
+        offscreen.width = iconSize;
+        offscreen.height = iconSize;
         const offCtx = offscreen.getContext('2d');
         const src = iconImageUrl(item);
 
@@ -177,22 +182,22 @@ export function initIconCloud(canvas, items, { onSelect } = {}) {
             img.onload = () => {
                 offCtx.clearRect(0, 0, offscreen.width, offscreen.height);
                 offCtx.beginPath();
-                offCtx.arc(24, 24, 24, 0, Math.PI * 2);
+                offCtx.arc(iconHalf, iconHalf, iconHalf, 0, Math.PI * 2);
                 offCtx.closePath();
                 offCtx.clip();
-                offCtx.drawImage(img, 0, 0, 48, 48);
+                offCtx.drawImage(img, 0, 0, iconSize, iconSize);
                 imagesLoaded[index] = true;
             };
             img.onerror = () => {
                 offCtx.fillStyle = '#292d30';
                 offCtx.beginPath();
-                offCtx.arc(24, 24, 24, 0, Math.PI * 2);
+                offCtx.arc(iconHalf, iconHalf, iconHalf, 0, Math.PI * 2);
                 offCtx.fill();
                 offCtx.fillStyle = '#f0f0f0';
-                offCtx.font = 'bold 14px Inter, sans-serif';
+                offCtx.font = `bold ${Math.round(iconSize * 0.29)}px Inter, sans-serif`;
                 offCtx.textAlign = 'center';
                 offCtx.textBaseline = 'middle';
-                offCtx.fillText(item.name.slice(0, 2).toUpperCase(), 24, 24);
+                offCtx.fillText(item.name.slice(0, 2).toUpperCase(), iconHalf, iconHalf);
                 imagesLoaded[index] = true;
             };
         }
@@ -251,7 +256,7 @@ export function initIconCloud(canvas, items, { onSelect } = {}) {
             const screenX = canvas.width / 2 + rotatedX;
             const screenY = canvas.height / 2 + rotatedY;
             const scale = (rotatedZ + 200) / 300;
-            const radius = 24 * scale;
+            const radius = iconHalf * scale;
             const dx = x - screenX;
             const dy = y - screenY;
 
@@ -354,14 +359,14 @@ export function initIconCloud(canvas, items, { onSelect } = {}) {
 
             if (index === selectedId) {
                 ctx.beginPath();
-                ctx.arc(0, 0, 28, 0, Math.PI * 2);
+                ctx.arc(0, 0, selectRing, 0, Math.PI * 2);
                 ctx.strokeStyle = 'rgba(59, 158, 255, 0.85)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
             }
 
             if (iconCanvases[index] && imagesLoaded[index]) {
-                ctx.drawImage(iconCanvases[index], -24, -24, 48, 48);
+                ctx.drawImage(iconCanvases[index], -iconHalf, -iconHalf, iconSize, iconSize);
             }
 
             ctx.restore();

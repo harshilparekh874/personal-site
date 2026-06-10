@@ -616,21 +616,22 @@ a {
 
 .stack-cloud-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-    gap: var(--spacing-48);
+    grid-template-columns: 1fr;
+    gap: var(--spacing-40);
     align-items: center;
-    min-height: 620px;
+    justify-items: center;
 }
 
 .stack-cloud-stage {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 560px;
+    width: 100%;
+    min-height: min(1120px, 100vw);
 }
 
 .stack-icon-cloud {
-    width: min(100%, 560px);
+    width: min(100%, 1120px);
     height: auto;
     aspect-ratio: 1;
     cursor: grab;
@@ -647,6 +648,7 @@ a {
     border-radius: var(--radius-cards);
     padding: var(--spacing-32);
     min-height: 220px;
+    width: min(100%, 640px);
     opacity: 0.72;
     transition: opacity 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
@@ -992,18 +994,12 @@ html.js-ready .reveal {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .stack-cloud-layout {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-32);
-        min-height: auto;
-    }
-
     .stack-cloud-stage {
-        min-height: 480px;
+        min-height: min(960px, 100vw);
     }
 
     .stack-icon-cloud {
-        width: min(100%, 480px);
+        width: min(100%, 960px);
     }
 }
 
@@ -1057,11 +1053,11 @@ html.js-ready .reveal {
     }
 
     .stack-cloud-stage {
-        min-height: 400px;
+        min-height: min(800px, 100vw);
     }
 
     .stack-icon-cloud {
-        width: min(100%, 400px);
+        width: min(100%, 800px);
     }
 
     .projects-grid {
@@ -1079,7 +1075,7 @@ html.js-ready .reveal {
 
 @media (max-width: 480px) {
     .stack-icon-cloud {
-        width: min(100%, 320px);
+        width: min(100%, 640px);
     }
 
     .hero-headline {
