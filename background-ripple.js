@@ -44,7 +44,41 @@ function buildGrid(container, config) {
     grid.appendChild(fragment);
     container.appendChild(grid);
 
-    return { grid, rows, cols };
+    return { grid, rows, cols, cellSize };
+}
+
+function getCellCoords(state, clientX, clientY) {
+    const { grid, rows, cols, cellSize } = state;
+    const rect = grid.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        return null;
+    }
+
+    const col = Math.floor(x / cellSize);
+    const row = Math.floor(y / cellSize);
+
+    if (row < 0 || col < 0 || row >= rows || col >= cols) {
+        return null;
+    }
+
+    return { row, col };
+}
+
+function getCellAt(state, row, col) {
+    return state.grid.querySelector(`.ripple-cell[data-row="${row}"][data-col="${col}"]`);
+}
+
+function setHoveredCell(state, hovered, next) {
+    if (hovered && hovered !== next) {
+        hovered.classList.remove('ripple-cell--hover');
+    }
+    if (next && hovered !== next) {
+        next.classList.add('ripple-cell--hover');
+    }
+    return next;
 }
 
 function triggerRipple(grid, row, col) {
@@ -54,16 +88,18 @@ function triggerRipple(grid, row, col) {
         cell.style.removeProperty('--duration');
     });
 
-    grid.querySelectorAll('.ripple-cell').forEach((cell) => {
-        const rowIdx = Number(cell.dataset.row);
-        const colIdx = Number(cell.dataset.col);
-        const distance = Math.hypot(row - rowIdx, col - colIdx);
-        const delay = Math.max(0, distance * 55);
-        const duration = 200 + distance * 80;
+    requestAnimationFrame(() => {
+        grid.querySelectorAll('.ripple-cell').forEach((cell) => {
+            const rowIdx = Number(cell.dataset.row);
+            const colIdx = Number(cell.dataset.col);
+            const distance = Math.hypot(row - rowIdx, col - colIdx);
+            const delay = Math.max(0, distance * 55);
+            const duration = 220 + distance * 90;
 
-        cell.style.setProperty('--delay', `${delay}ms`);
-        cell.style.setProperty('--duration', `${duration}ms`);
-        cell.classList.add('ripple-cell--animate');
+            cell.style.setProperty('--delay', `${delay}ms`);
+            cell.style.setProperty('--duration', `${duration}ms`);
+            cell.classList.add('ripple-cell--animate');
+        });
     });
 }
 
@@ -74,8 +110,10 @@ export function initBackgroundRipple(containerId, options = {}) {
     const config = { ...DEFAULTS, ...options };
     let state = buildGrid(container, config);
     let resizeTimer = null;
+    let hoveredCell = null;
 
     const refresh = () => {
+        hoveredCell = null;
         state = buildGrid(container, config);
     };
 
@@ -84,19 +122,40 @@ export function initBackgroundRipple(containerId, options = {}) {
         resizeTimer = setTimeout(refresh, 120);
     };
 
-    container.addEventListener('click', (e) => {
-        const cell = e.target.closest('.ripple-cell');
-        if (!cell || !container.contains(cell)) return;
+    const onMouseMove = (e) => {
+        const coords = getCellCoords(state, e.clientX, e.clientY);
+        if (!coords) {
+            hoveredCell = setHoveredCell(state, hoveredCell, null);
+            return;
+        }
+        hoveredCell = setHoveredCell(state, hoveredCell, getCellAt(state, coords.row, coords.col));
+    };
 
-        triggerRipple(
-            state.grid,
-            Number(cell.dataset.row),
-            Number(cell.dataset.col)
-        );
-    });
+    const onMouseLeave = () => {
+        hoveredCell = setHoveredCell(state, hoveredCell, null);
+    };
+
+    const onClick = (e) => {
+        const coords = getCellCoords(state, e.clientX, e.clientY);
+        if (!coords) return;
+        triggerRipple(state.grid, coords.row, coords.col);
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('mouseleave', onMouseLeave);
+    window.addEventListener('click', onClick);
 
     window.addEventListener('resize', scheduleRefresh);
     window.addEventListener('load', refresh);
+
+    const destroy = () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseleave', onMouseLeave);
+        window.removeEventListener('click', onClick);
+        window.removeEventListener('resize', scheduleRefresh);
+        window.removeEventListener('load', refresh);
+        clearTimeout(resizeTimer);
+    };
 
     if (typeof ResizeObserver !== 'undefined') {
         const observer = new ResizeObserver(scheduleRefresh);
@@ -107,19 +166,10 @@ export function initBackgroundRipple(containerId, options = {}) {
             refresh,
             destroy: () => {
                 observer.disconnect();
-                window.removeEventListener('resize', scheduleRefresh);
-                window.removeEventListener('load', refresh);
-                clearTimeout(resizeTimer);
+                destroy();
             },
         };
     }
 
-    return {
-        refresh,
-        destroy: () => {
-            window.removeEventListener('resize', scheduleRefresh);
-            window.removeEventListener('load', refresh);
-            clearTimeout(resizeTimer);
-        },
-    };
+    return { refresh, destroy };
 }
