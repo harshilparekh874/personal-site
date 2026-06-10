@@ -2,6 +2,9 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
     build: {
-        target: 'esnext'
-    }
+        target: 'esnext',
+    },
+    optimizeDeps: {
+        include: ['rubiks-cube-solver'],
+    },
 })

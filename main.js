@@ -6,10 +6,16 @@ import { initSpotlight } from './spotlight.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+document.documentElement.classList.add('js-ready');
 gsap.registerPlugin(ScrollTrigger);
 
 const siteRipple = initBackgroundRipple('site-ripple');
-new RubikCube('cube-canvas');
+
+try {
+    new RubikCube('cube-canvas');
+} catch (error) {
+    console.error('Rubik cube failed to initialize:', error);
+}
 initSpotlight('hero-spotlight');
 initVortex('experience-vortex', {
     baseHue: 142,
