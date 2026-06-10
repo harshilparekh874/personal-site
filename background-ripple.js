@@ -1,7 +1,8 @@
 const DEFAULTS = {
-    cellSize: 56,
-    borderColor: 'rgba(255, 255, 255, 0.07)',
+    cellSize: 64,
+    borderColor: 'rgba(255, 255, 255, 0.09)',
     fillColor: '#000000',
+    rippleRadius: 14,
 };
 
 function getPageHeight() {
@@ -30,21 +31,26 @@ function buildGrid(container, config) {
     grid.style.width = `${gridWidth}px`;
     grid.setAttribute('role', 'presentation');
 
+    const cells = Array.from({ length: rows }, () => []);
     const fragment = document.createDocumentFragment();
+
     for (let i = 0; i < rows * cols; i++) {
+        const row = Math.floor(i / cols);
+        const col = i % cols;
         const cell = document.createElement('div');
         cell.className = 'ripple-cell';
-        cell.dataset.row = String(Math.floor(i / cols));
-        cell.dataset.col = String(i % cols);
+        cell.dataset.row = String(row);
+        cell.dataset.col = String(col);
         cell.style.borderColor = config.borderColor;
         cell.style.backgroundColor = config.fillColor;
+        cells[row][col] = cell;
         fragment.appendChild(cell);
     }
 
     grid.appendChild(fragment);
     container.appendChild(grid);
 
-    return { grid, rows, cols, cellSize };
+    return { grid, rows, cols, cellSize, cells, rippleRadius: config.rippleRadius };
 }
 
 function getCellCoords(state, clientX, clientY) {
@@ -68,10 +74,10 @@ function getCellCoords(state, clientX, clientY) {
 }
 
 function getCellAt(state, row, col) {
-    return state.grid.querySelector(`.ripple-cell[data-row="${row}"][data-col="${col}"]`);
+    return state.cells[row]?.[col] ?? null;
 }
 
-function setHoveredCell(state, hovered, next) {
+function setHoveredCell(hovered, next) {
     if (hovered && hovered !== next) {
         hovered.classList.remove('ripple-cell--hover');
     }
@@ -81,28 +87,6 @@ function setHoveredCell(state, hovered, next) {
     return next;
 }
 
-function triggerRipple(grid, row, col) {
-    grid.querySelectorAll('.ripple-cell').forEach((cell) => {
-        cell.classList.remove('ripple-cell--animate');
-        cell.style.removeProperty('--delay');
-        cell.style.removeProperty('--duration');
-    });
-
-    requestAnimationFrame(() => {
-        grid.querySelectorAll('.ripple-cell').forEach((cell) => {
-            const rowIdx = Number(cell.dataset.row);
-            const colIdx = Number(cell.dataset.col);
-            const distance = Math.hypot(row - rowIdx, col - colIdx);
-            const delay = Math.max(0, distance * 55);
-            const duration = 220 + distance * 90;
-
-            cell.style.setProperty('--delay', `${delay}ms`);
-            cell.style.setProperty('--duration', `${duration}ms`);
-            cell.classList.add('ripple-cell--animate');
-        });
-    });
-}
-
 export function initBackgroundRipple(containerId, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) return null;
@@ -110,57 +94,137 @@ export function initBackgroundRipple(containerId, options = {}) {
     const config = { ...DEFAULTS, ...options };
     let state = buildGrid(container, config);
     let resizeTimer = null;
+    let scrollTimer = null;
     let hoveredCell = null;
+    let hoverRaf = null;
+    let isScrolling = false;
+    let lastPointer = { x: 0, y: 0 };
+    let activeRippleCells = [];
+
+    const clearActiveRipple = () => {
+        for (const cell of activeRippleCells) {
+            cell.classList.remove('ripple-cell--animate');
+            cell.style.removeProperty('--delay');
+            cell.style.removeProperty('--duration');
+        }
+        activeRippleCells = [];
+    };
+
+    const triggerRipple = (row, col) => {
+        clearActiveRipple();
+
+        const { cells, rows, cols, rippleRadius } = state;
+        const rMin = Math.max(0, row - rippleRadius);
+        const rMax = Math.min(rows - 1, row + rippleRadius);
+        const cMin = Math.max(0, col - rippleRadius);
+        const cMax = Math.min(cols - 1, col + rippleRadius);
+
+        requestAnimationFrame(() => {
+            for (let r = rMin; r <= rMax; r++) {
+                for (let c = cMin; c <= cMax; c++) {
+                    const distance = Math.hypot(row - r, col - c);
+                    if (distance > rippleRadius) continue;
+
+                    const cell = cells[r][c];
+                    const delay = Math.max(0, distance * 50);
+                    const duration = 200 + distance * 70;
+
+                    cell.style.setProperty('--delay', `${delay}ms`);
+                    cell.style.setProperty('--duration', `${duration}ms`);
+                    cell.classList.add('ripple-cell--animate');
+                    activeRippleCells.push(cell);
+                }
+            }
+        });
+    };
+
+    const updateHover = () => {
+        if (isScrolling) return;
+
+        const coords = getCellCoords(state, lastPointer.x, lastPointer.y);
+        if (!coords) {
+            hoveredCell = setHoveredCell(hoveredCell, null);
+            return;
+        }
+
+        hoveredCell = setHoveredCell(hoveredCell, getCellAt(state, coords.row, coords.col));
+    };
 
     const refresh = () => {
+        clearActiveRipple();
         hoveredCell = null;
         state = buildGrid(container, config);
     };
 
     const scheduleRefresh = () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(refresh, 120);
+        resizeTimer = setTimeout(refresh, 200);
     };
 
-    const onMouseMove = (e) => {
-        const coords = getCellCoords(state, e.clientX, e.clientY);
-        if (!coords) {
-            hoveredCell = setHoveredCell(state, hoveredCell, null);
-            return;
-        }
-        hoveredCell = setHoveredCell(state, hoveredCell, getCellAt(state, coords.row, coords.col));
+    const onPointerMove = (e) => {
+        lastPointer.x = e.clientX;
+        lastPointer.y = e.clientY;
+        if (isScrolling || hoverRaf) return;
+
+        hoverRaf = requestAnimationFrame(() => {
+            hoverRaf = null;
+            updateHover();
+        });
     };
 
-    const onMouseLeave = () => {
-        hoveredCell = setHoveredCell(state, hoveredCell, null);
+    const onPointerLeave = () => {
+        hoveredCell = setHoveredCell(hoveredCell, null);
+    };
+
+    const onScroll = () => {
+        isScrolling = true;
+        hoveredCell = setHoveredCell(hoveredCell, null);
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+            isScrolling = false;
+        }, 150);
     };
 
     const onClick = (e) => {
         const coords = getCellCoords(state, e.clientX, e.clientY);
         if (!coords) return;
-        triggerRipple(state.grid, coords.row, coords.col);
+        triggerRipple(coords.row, coords.col);
     };
 
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    window.addEventListener('mouseleave', onMouseLeave);
-    window.addEventListener('click', onClick);
+    const onAnimationEnd = (e) => {
+        if (!e.target.classList?.contains('ripple-cell--animate')) return;
+        e.target.classList.remove('ripple-cell--animate');
+        e.target.style.removeProperty('--delay');
+        e.target.style.removeProperty('--duration');
+        activeRippleCells = activeRippleCells.filter((cell) => cell !== e.target);
+    };
 
+    container.addEventListener('animationend', onAnimationEnd);
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerleave', onPointerLeave);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('click', onClick);
     window.addEventListener('resize', scheduleRefresh);
     window.addEventListener('load', refresh);
 
     const destroy = () => {
-        window.removeEventListener('mousemove', onMouseMove);
-        window.removeEventListener('mouseleave', onMouseLeave);
+        container.removeEventListener('animationend', onAnimationEnd);
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerleave', onPointerLeave);
+        window.removeEventListener('scroll', onScroll);
         window.removeEventListener('click', onClick);
         window.removeEventListener('resize', scheduleRefresh);
         window.removeEventListener('load', refresh);
         clearTimeout(resizeTimer);
+        clearTimeout(scrollTimer);
+        if (hoverRaf) cancelAnimationFrame(hoverRaf);
+        clearActiveRipple();
     };
 
     if (typeof ResizeObserver !== 'undefined') {
         const observer = new ResizeObserver(scheduleRefresh);
         observer.observe(document.body);
-        observer.observe(document.documentElement);
 
         return {
             refresh,
