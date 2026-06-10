@@ -582,29 +582,27 @@ export function initStackCards({
             undockCard(dockedCard);
         }
 
-        cards.forEach((card) => stopCardMotion(card));
+        thrownOff.forEach((card) => stopCardMotion(card));
 
         const onPile = cards.filter((card) => !card.offScreen);
-        let ordered;
+        const onPileSorted = [...onPile].sort((a, b) => a.zIndex - b.zIndex);
+        const returnedSorted = shuffle(thrownOff);
 
-        if (thrownOff.length > 1) {
-            ordered = [...onPile, ...shuffle(thrownOff)];
-        } else if (onPile.length) {
-            ordered = [...onPile, ...thrownOff];
-        } else {
-            ordered = [...cards].sort((a, b) => a.id - b.id);
-        }
-
+        // Returned cards go to the bottom; cards still on the pile keep their positions.
+        const ordered = [...returnedSorted, ...onPileSorted];
         ordered.forEach((card, index) => {
+            card.zIndex = index + 1;
+            applyTransform(card);
+        });
+
+        returnedSorted.forEach((card) => {
             card.offScreen = false;
             card.docked = false;
             card.el.classList.remove('is-docked');
-            card.zIndex = index + 1;
             animateCardTo(card, messyLayout(), 0.55);
         });
 
         gsap.delayedCall(0.56, () => {
-            normalizeZIndices();
             isReturning = false;
             syncOffScreenFlags();
             updateReturnButton();
