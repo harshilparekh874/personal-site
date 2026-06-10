@@ -529,77 +529,73 @@ a {
 
 .projects-section {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .projects-lamp-wrap {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
-    min-height: 18rem;
-    margin-bottom: calc(var(--spacing-64) * -1);
+    min-height: 24rem;
+    margin-bottom: var(--spacing-32);
     pointer-events: none;
-}
-
-.lamp {
-    position: relative;
     display: flex;
-    width: 100%;
-    min-height: 18rem;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    overflow: hidden;
+}
+
+.projects-lamp-wrap.lamp {
+    isolation: isolate;
 }
 
 .lamp__stage {
-    position: relative;
+    position: absolute;
+    inset: 0;
     z-index: 0;
     display: flex;
-    width: 100%;
-    flex: 1;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     transform: scaleY(1.25);
     transform-origin: center bottom;
-    isolation: isolate;
+    pointer-events: none;
 }
 
 .lamp__conic {
     position: absolute;
-    top: auto;
-    bottom: 0;
+    bottom: 3.5rem;
     height: 14rem;
     width: 15rem;
     overflow: visible;
-    opacity: 0.55;
     will-change: width, opacity;
 }
 
 .lamp__conic--left {
     right: 50%;
     background-image: conic-gradient(
-        from 70deg at center top,
-        rgba(125, 211, 252, 0.95) 0deg,
-        rgba(34, 211, 238, 0.55) 18deg,
-        transparent 58deg
+        from 70deg at 50% 0%,
+        #67e8f9 0deg,
+        #22d3ee 12deg,
+        rgba(34, 211, 238, 0.45) 28deg,
+        transparent 52deg
     );
 }
 
 .lamp__conic--right {
     left: 50%;
     background-image: conic-gradient(
-        from 290deg at center top,
-        rgba(125, 211, 252, 0.95) 0deg,
-        rgba(34, 211, 238, 0.55) 18deg,
-        transparent 58deg
+        from 290deg at 50% 0%,
+        #67e8f9 0deg,
+        #22d3ee 12deg,
+        rgba(34, 211, 238, 0.45) 28deg,
+        transparent 52deg
     );
 }
 
 .lamp__mask {
     position: absolute;
     z-index: 2;
-    background: var(--color-void-black);
+    background: #000;
     pointer-events: none;
 }
 
@@ -607,90 +603,107 @@ a {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 10rem;
-    background: var(--color-void-black);
-    -webkit-mask-image: linear-gradient(to top, #000, transparent);
-    mask-image: linear-gradient(to top, #000, transparent);
+    height: 9rem;
+    -webkit-mask-image: linear-gradient(to top, #000 20%, transparent);
+    mask-image: linear-gradient(to top, #000 20%, transparent);
 }
 
 .lamp__mask--side {
     bottom: 0;
     height: 100%;
-    width: 10rem;
+    width: 8rem;
 }
 
 .lamp__mask--side-left {
     left: 0;
-    -webkit-mask-image: linear-gradient(to right, white, transparent);
-    mask-image: linear-gradient(to right, white, transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 25%, transparent);
+    mask-image: linear-gradient(to right, #000 25%, transparent);
 }
 
 .lamp__mask--side-right {
     right: 0;
-    -webkit-mask-image: linear-gradient(to left, white, transparent);
-    mask-image: linear-gradient(to left, white, transparent);
+    -webkit-mask-image: linear-gradient(to left, #000 25%, transparent);
+    mask-image: linear-gradient(to left, #000 25%, transparent);
 }
 
 .lamp__halo {
     position: absolute;
-    top: auto;
     left: 50%;
-    z-index: 40;
+    z-index: 3;
     border-radius: 999px;
     transform: translateX(-50%);
     pointer-events: none;
 }
 
 .lamp__halo--wide {
-    bottom: 7.5rem;
-    width: 30rem;
-    height: 9rem;
-    background: rgba(103, 232, 249, 0.42);
-    filter: blur(64px);
+    bottom: 8.5rem;
+    width: 34rem;
+    height: 10rem;
+    background: rgba(103, 232, 249, 0.55);
+    filter: blur(72px);
 }
 
 .lamp__halo--core {
-    bottom: 6.5rem;
-    width: 18rem;
-    height: 9rem;
-    background: rgba(165, 243, 252, 0.72);
-    filter: blur(40px);
+    bottom: 7.25rem;
+    width: 20rem;
+    height: 10rem;
+    background: rgba(186, 230, 253, 0.85);
+    filter: blur(48px);
 }
 
 .lamp__beam-line {
     position: absolute;
-    top: auto;
-    bottom: 7rem;
+    bottom: 8rem;
     left: 50%;
-    z-index: 50;
-    width: 30rem;
+    z-index: 4;
+    width: 32rem;
     height: 2px;
     transform: translateX(-50%);
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(165, 243, 252, 0.35) 15%,
-        rgba(224, 242, 254, 0.95) 50%,
-        rgba(165, 243, 252, 0.35) 85%,
+        rgba(186, 230, 253, 0.5) 12%,
+        #f0f9ff 50%,
+        rgba(186, 230, 253, 0.5) 88%,
         transparent
     );
-    box-shadow: 0 0 18px rgba(125, 211, 252, 0.85);
+    box-shadow: 0 0 28px rgba(125, 211, 252, 1);
 }
 
 .lamp__floor {
     position: absolute;
-    top: auto;
-    bottom: 0;
+    bottom: 3.25rem;
     left: 50%;
-    z-index: 30;
-    width: 14rem;
-    height: 1px;
+    z-index: 3;
+    width: 16rem;
+    height: 2px;
     transform: translateX(-50%);
-    background: linear-gradient(90deg, transparent, rgba(224, 242, 254, 0.9), transparent);
-    box-shadow: 0 0 24px rgba(125, 211, 252, 0.75);
+    background: linear-gradient(90deg, transparent, #e0f2fe, transparent);
+    box-shadow: 0 0 32px rgba(125, 211, 252, 0.95);
 }
 
-.projects-section .container {
+.lamp__content {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    padding-top: 9rem;
+    pointer-events: auto;
+}
+
+.lamp__heading {
+    margin-bottom: 0;
+    text-align: center;
+    max-width: none;
+}
+
+.lamp__heading .section-heading {
+    background: linear-gradient(to bottom right, #e2e8f0, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.projects-section > .container {
     position: relative;
     z-index: 2;
 }

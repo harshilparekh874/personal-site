@@ -5,67 +5,93 @@ export function initLamp(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return null;
 
-    container.className = 'lamp';
-    container.innerHTML = `
-        <div class="lamp__stage" aria-hidden="true">
-            <div class="lamp__conic lamp__conic--left">
-                <div class="lamp__mask lamp__mask--top"></div>
-                <div class="lamp__mask lamp__mask--side lamp__mask--side-left"></div>
-            </div>
-            <div class="lamp__conic lamp__conic--right">
-                <div class="lamp__mask lamp__mask--top"></div>
-                <div class="lamp__mask lamp__mask--side lamp__mask--side-right"></div>
-            </div>
-            <div class="lamp__halo lamp__halo--wide"></div>
-            <div class="lamp__halo lamp__halo--core"></div>
-            <div class="lamp__beam-line"></div>
-            <div class="lamp__floor"></div>
+    const stage = document.createElement('div');
+    stage.className = 'lamp__stage';
+    stage.setAttribute('aria-hidden', 'true');
+    stage.innerHTML = `
+        <div class="lamp__conic lamp__conic--left">
+            <div class="lamp__mask lamp__mask--top"></div>
+            <div class="lamp__mask lamp__mask--side lamp__mask--side-left"></div>
         </div>
+        <div class="lamp__conic lamp__conic--right">
+            <div class="lamp__mask lamp__mask--top"></div>
+            <div class="lamp__mask lamp__mask--side lamp__mask--side-right"></div>
+        </div>
+        <div class="lamp__halo lamp__halo--wide"></div>
+        <div class="lamp__halo lamp__halo--core"></div>
+        <div class="lamp__beam-line"></div>
+        <div class="lamp__floor"></div>
     `;
 
-    const stage = container.querySelector('.lamp__stage');
-    const left = container.querySelector('.lamp__conic--left');
-    const right = container.querySelector('.lamp__conic--right');
-    const halos = container.querySelectorAll('.lamp__halo');
-    const line = container.querySelector('.lamp__beam-line');
+    container.prepend(stage);
+    container.classList.add('lamp');
 
-    gsap.set([left, right], { opacity: 0.55, width: '15rem' });
-    gsap.set(halos, { opacity: 0, scale: 0.85 });
-    gsap.set(line, { opacity: 0, scaleX: 0.6 });
+    const left = stage.querySelector('.lamp__conic--left');
+    const right = stage.querySelector('.lamp__conic--right');
+    const halos = stage.querySelectorAll('.lamp__halo');
+    const line = stage.querySelector('.lamp__beam-line');
+    const heading = container.querySelector('.section-header');
 
-    const tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: container,
-            start: 'top 82%',
-            toggleActions: 'play none none none',
-        },
-    });
+    gsap.set([left, right], { opacity: 0.5, width: '15rem' });
+    gsap.set(halos, { opacity: 0.35, scale: 0.9 });
+    gsap.set(line, { opacity: 0.4, scaleX: 0.65 });
+
+    if (heading) {
+        gsap.set(heading, { opacity: 0.5, y: 80 });
+    }
+
+    const tl = gsap.timeline({ paused: true, delay: 0.25 });
 
     tl.to([left, right], {
         opacity: 1,
-        width: '36rem',
-        duration: 0.9,
+        width: '34rem',
+        duration: 0.85,
         ease: 'power2.inOut',
-    }, 0.2)
+    }, 0)
         .to(halos, {
             opacity: 1,
             scale: 1,
-            duration: 0.8,
+            duration: 0.75,
             ease: 'power2.out',
-            stagger: 0.08,
-        }, 0.35)
+            stagger: 0.06,
+        }, 0.15)
         .to(line, {
             opacity: 1,
             scaleX: 1,
-            duration: 0.7,
+            duration: 0.65,
             ease: 'power2.out',
-        }, 0.45);
+        }, 0.25);
+
+    if (heading) {
+        tl.to(
+            heading,
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power2.inOut',
+            },
+            0.3,
+        );
+    }
+
+    const trigger = ScrollTrigger.create({
+        trigger: container,
+        start: 'top 90%',
+        once: true,
+        onEnter: () => tl.play(0),
+    });
+
+    if (ScrollTrigger.isInViewport(container, 0.1)) {
+        tl.play(0);
+    }
 
     return {
         destroy() {
-            tl.scrollTrigger?.kill();
+            trigger.kill();
             tl.kill();
-            container.innerHTML = '';
+            stage.remove();
+            container.classList.remove('lamp');
         },
     };
 }
