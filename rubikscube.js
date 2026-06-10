@@ -217,6 +217,9 @@ export class RubikCube {
         this.logicalCube = null;
         this.solverApi = null;
         this.shuffleBtn = document.getElementById(shuffleButtonId);
+        this.actionWrap = document.getElementById('cube-action-wrap');
+        this.cubePhase = 'shuffle';
+        this.pendingSolveMoves = null;
 
         this._initScene();
         this._buildCube();
@@ -786,31 +789,47 @@ export class RubikCube {
         return moves;
     }
 
-    _fadeShuffleButton(visible) {
-        if (!this.shuffleBtn) return Promise.resolve();
+    _fadeActionButton(visible) {
+        const target = this.actionWrap || this.shuffleBtn;
+        if (!target) return Promise.resolve();
 
         return new Promise((resolve) => {
-            gsap.to(this.shuffleBtn, {
+            gsap.to(target, {
                 opacity: visible ? 1 : 0,
                 duration: 0.35,
                 ease: 'power2.inOut',
                 onComplete: () => {
-                    this.shuffleBtn.style.pointerEvents = visible ? '' : 'none';
+                    target.style.pointerEvents = visible ? '' : 'none';
                     resolve();
                 },
             });
         });
     }
 
+    _setActionLabel(label) {
+        if (this.shuffleBtn) {
+            this.shuffleBtn.textContent = label;
+        }
+    }
+
     _setupShuffleButton() {
         if (!this.shuffleBtn) return;
 
-        gsap.set(this.shuffleBtn, { opacity: 1 });
+        const target = this.actionWrap || this.shuffleBtn;
+        gsap.set(target, { opacity: 1 });
+        this._setActionLabel('Shuffle');
+        this.cubePhase = 'shuffle';
 
-        this.shuffleBtn.addEventListener('click', () => this._runShuffleSequence());
+        this.shuffleBtn.addEventListener('click', () => {
+            if (this.cubePhase === 'shuffle') {
+                this._runScrambleSequence();
+            } else {
+                this._runSolveSequence();
+            }
+        });
     }
 
-    async _runShuffleSequence() {
+    async _runScrambleSequence() {
         if (this.sequenceActive || this.isAnimating) return;
 
         this.sequenceActive = true;
@@ -822,22 +841,64 @@ export class RubikCube {
         this._validateCubeIntegrity();
 
         try {
+            await this._fadeActionButton(false);
+
             const { RubiksCube, solveCube } = await this._ensureSolver();
             this.logicalCube = RubiksCube.Solved();
 
             const scramble = this.scramble(16 + Math.floor(Math.random() * 8));
             await this._executeMoves(scramble, SCRAMBLE_MOVE_DURATION, MOVE_EASE);
 
-            const solveMoves = parseSolverSolution(solveCube(this.logicalCube.toString()));
-            await this._wait(2000);
+            this.pendingSolveMoves = parseSolverSolution(
+                solveCube(this.logicalCube.toString())
+            );
+            this.cubePhase = 'solve';
+            this._setActionLabel('Solve');
 
-            await this._fadeShuffleButton(false);
-            await this._executeMoves(solveMoves, SOLVE_MOVE_DURATION, MOVE_EASE);
-            this.logicalCube = RubiksCube.Solved();
-            await this._fadeShuffleButton(true);
+            await this._fadeActionButton(true);
         } catch (error) {
-            console.error('Cube shuffle/solve failed:', error);
-            await this._fadeShuffleButton(true);
+            console.error('Cube shuffle failed:', error);
+            this.cubePhase = 'shuffle';
+            this.pendingSolveMoves = null;
+            this._setActionLabel('Shuffle');
+            await this._fadeActionButton(true);
+        } finally {
+            this.shuffleBtn.disabled = false;
+            this.sequenceActive = false;
+
+            if (!this.isDragging) {
+                this._scheduleAutoSpin(500);
+            }
+        }
+    }
+
+    async _runSolveSequence() {
+        if (this.sequenceActive || this.isAnimating || !this.pendingSolveMoves?.length) return;
+
+        this.sequenceActive = true;
+        this.shuffleBtn.disabled = true;
+        this.autoSpinEnabled = false;
+        this.spinVelocity.theta = 0;
+        this.spinVelocity.phi = 0;
+        this._cancelAutoSpinSchedule();
+
+        try {
+            await this._fadeActionButton(false);
+
+            const { RubiksCube } = await this._ensureSolver();
+            await this._executeMoves(this.pendingSolveMoves, SOLVE_MOVE_DURATION, MOVE_EASE);
+
+            this.logicalCube = RubiksCube.Solved();
+            this.pendingSolveMoves = null;
+            this.cubePhase = 'shuffle';
+            this._setActionLabel('Shuffle');
+
+            await this._fadeActionButton(true);
+        } catch (error) {
+            console.error('Cube solve failed:', error);
+            this.cubePhase = 'solve';
+            this._setActionLabel('Solve');
+            await this._fadeActionButton(true);
         } finally {
             this.shuffleBtn.disabled = false;
             this.sequenceActive = false;
