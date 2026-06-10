@@ -1,3 +1,4 @@
+import { initBackgroundRipple } from './background-ripple.js';
 import { RubikCube } from './rubikscube.js';
 import { initVortex } from './vortex.js';
 import { initWobbleCards } from './wobble-card.js';
@@ -7,6 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const siteRipple = initBackgroundRipple('site-ripple');
 new RubikCube('cube-canvas');
 initSpotlight('hero-spotlight');
 initVortex('experience-vortex', {
@@ -14,7 +16,7 @@ initVortex('experience-vortex', {
     rangeHue: 36,
     saturation: 68,
     lightness: 32,
-    backgroundColor: '#000000',
+    backgroundColor: 'transparent',
     particleCount: 600,
 });
 initWobbleCards();
@@ -109,5 +111,6 @@ if (showMoreBtn && moreSkillsContainer) {
         const isVisible = moreSkillsContainer.classList.toggle('visible');
         showMoreBtn.textContent = isVisible ? 'Show less skills' : 'Show more skills';
         ScrollTrigger.refresh();
+        siteRipple?.refresh?.();
     });
 }

@@ -27,6 +27,65 @@ body {
     line-height: var(--leading-body);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+}
+
+main {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Background ripple grid ── */
+
+.site-ripple {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 0;
+    pointer-events: none;
+    --ripple-base: 0.16;
+    --ripple-peak: 0.24;
+    --ripple-hover: 0.26;
+}
+
+.ripple-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--ripple-cols), var(--ripple-cell-size));
+    grid-template-rows: repeat(var(--ripple-rows), var(--ripple-cell-size));
+    width: 100%;
+    min-height: 100%;
+    margin-inline: auto;
+}
+
+.ripple-cell {
+    border: 0.5px solid rgba(255, 255, 255, 0.07);
+    background: #000000;
+    opacity: var(--ripple-base);
+    transition: opacity 0.15s ease;
+    pointer-events: auto;
+    box-shadow: inset 0 0 40px 1px rgba(255, 255, 255, 0.02);
+}
+
+.ripple-cell:hover {
+    opacity: var(--ripple-hover);
+}
+
+.ripple-cell--animate {
+    animation: cell-ripple var(--duration, 200ms) ease-out var(--delay, 0ms) 1 none;
+}
+
+@keyframes cell-ripple {
+    0% {
+        opacity: var(--ripple-base);
+    }
+    50% {
+        opacity: var(--ripple-peak);
+    }
+    100% {
+        opacity: var(--ripple-base);
+    }
 }
 
 a {
@@ -198,32 +257,18 @@ a {
     padding-top: 59px;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.96);
+    background: transparent;
     overflow: visible;
 }
 
-.hero-spotlight,
-.hero-grid {
+.hero-spotlight {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
     overflow: hidden;
-}
-
-.hero-spotlight {
     z-index: 0;
-}
-
-.hero-grid {
-    z-index: 0;
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 75%);
 }
 
 .spotlight-root {
@@ -360,11 +405,7 @@ a {
 
 .section {
     padding: var(--spacing-96) 0;
-    background: var(--color-void-black);
-}
-
-.section-divider {
-    border-top: 1px solid var(--color-graphite-rail);
+    background: transparent;
 }
 
 .section-header {
@@ -736,8 +777,8 @@ a {
     z-index: 1;
     pointer-events: none;
     background:
-        linear-gradient(to bottom, var(--color-void-black) 0%, transparent 18%, transparent 82%, var(--color-void-black) 100%),
-        linear-gradient(to right, var(--color-void-black) 0%, transparent 12%, transparent 88%, var(--color-void-black) 100%);
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, transparent 14%, transparent 86%, rgba(0, 0, 0, 0.35) 100%),
+        linear-gradient(to right, rgba(0, 0, 0, 0.25) 0%, transparent 10%, transparent 90%, rgba(0, 0, 0, 0.25) 100%);
 }
 
 .experience-content {
@@ -790,9 +831,11 @@ a {
 /* ── Footer ── */
 
 .site-footer {
-    border-top: 1px solid var(--color-graphite-rail);
     padding: var(--spacing-40) 0;
     margin-top: var(--spacing-48);
+    position: relative;
+    z-index: 1;
+    background: transparent;
 }
 
 .footer-inner {

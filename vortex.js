@@ -167,8 +167,10 @@ export function initVortex(containerEl, options = {}) {
         const h = canvas.height / Math.min(window.devicePixelRatio, 2);
 
         ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = config.backgroundColor;
-        ctx.fillRect(0, 0, w, h);
+        if (config.backgroundColor && config.backgroundColor !== 'transparent') {
+            ctx.fillStyle = config.backgroundColor;
+            ctx.fillRect(0, 0, w, h);
+        }
 
         for (let i = 0; i < particlePropsLength; i += PARTICLE_PROP_COUNT) {
             updateParticle(i);
