@@ -204,6 +204,8 @@ export class RubikCube {
         this.isDragging = false;
         this.orbitCoasting = false;
         this.autoSpinEnabled = true;
+        this.autoSpinBlend = 1;
+        this.autoSpinRampDuration = 2.6;
         this._autoSpinWaitingSettle = false;
         this._autoSpinArmTime = null;
         this._autoSpinDelay = 1800;
@@ -321,7 +323,13 @@ export class RubikCube {
             !this.isAnimating &&
             !this.sequenceActive
         ) {
-            this.cubeGroup.rotation.y += this.autoSpinSpeed * delta;
+            if (this.autoSpinBlend < 1) {
+                this.autoSpinBlend = Math.min(
+                    1,
+                    this.autoSpinBlend + delta / this.autoSpinRampDuration
+                );
+            }
+            this.cubeGroup.rotation.y += this.autoSpinSpeed * this.autoSpinBlend * delta;
         }
 
         this._tickAutoSpinResume();
@@ -352,7 +360,7 @@ export class RubikCube {
         this.spinVelocity.phi *= decay;
     }
 
-    _scheduleAutoSpin(delay = 1800) {
+    _scheduleAutoSpin(delay = 500) {
         clearTimeout(this.autoRotateTimer);
         this._autoSpinDelay = delay;
         this._autoSpinArmTime = null;
@@ -376,6 +384,7 @@ export class RubikCube {
 
         if (performance.now() >= this._autoSpinArmTime) {
             this.autoSpinEnabled = true;
+            this.autoSpinBlend = 0;
             this._autoSpinWaitingSettle = false;
             this._autoSpinArmTime = null;
         }
@@ -385,6 +394,7 @@ export class RubikCube {
         clearTimeout(this.autoRotateTimer);
         this._autoSpinWaitingSettle = false;
         this._autoSpinArmTime = null;
+        this.autoSpinBlend = 0;
     }
 
     _setupDragControls() {
@@ -407,6 +417,7 @@ export class RubikCube {
 
         this.isDragging = true;
         this.autoSpinEnabled = false;
+        this.autoSpinBlend = 0;
         this.orbitCoasting = false;
         this.spinVelocity.theta = 0;
         this.spinVelocity.phi = 0;
@@ -428,7 +439,7 @@ export class RubikCube {
         this._pointer.lastY = e.clientY;
 
         this.orbit.theta -= dx * DRAG_ROTATE_SPEED;
-        this.orbit.phi = this._clampOrbitPhi(this.orbit.phi + dy * DRAG_ROTATE_SPEED);
+        this.orbit.phi = this._clampOrbitPhi(this.orbit.phi - dy * DRAG_ROTATE_SPEED);
         this._updateCamera();
 
         this._velocitySamples.push({ dx, dy, t: performance.now() });
@@ -484,7 +495,7 @@ export class RubikCube {
             -(sumDx / dt) * DRAG_ROTATE_SPEED * 0.02
         );
         this.spinVelocity.phi = this._clampOrbitVelocity(
-            (sumDy / dt) * DRAG_ROTATE_SPEED * 0.02
+            -(sumDy / dt) * DRAG_ROTATE_SPEED * 0.02
         );
     }
 
@@ -832,7 +843,7 @@ export class RubikCube {
             this.sequenceActive = false;
 
             if (!this.isDragging) {
-                this._scheduleAutoSpin(1600);
+                this._scheduleAutoSpin(500);
             }
         }
     }
