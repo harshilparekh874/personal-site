@@ -5,13 +5,17 @@ import { initVortex } from './vortex.js';
 import { initWobbleCards } from './wobble-card.js';
 import { initExpandableProjects } from './expandable-projects.js';
 import { initSpotlight } from './spotlight.js';
+import { initTheme } from './theme.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 document.documentElement.classList.add('js-ready');
 gsap.registerPlugin(ScrollTrigger);
 
+initTheme();
+
 const siteRipple = initBackgroundRipple('site-ripple');
+window.addEventListener('themechange', () => siteRipple?.refresh?.());
 
 try {
     new RubikCube('cube-canvas');
@@ -62,8 +66,9 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         e.preventDefault();
         const target = document.querySelector(href);
         if (target) {
+            const headerHeight = header?.offsetHeight ?? 59;
             window.scrollTo({
-                top: target.offsetTop - 59,
+                top: target.offsetTop - headerHeight,
                 behavior: 'smooth',
             });
         }

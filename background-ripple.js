@@ -5,6 +5,14 @@ const DEFAULTS = {
     rippleRadius: 14,
 };
 
+function getThemeRippleColors() {
+    const styles = getComputedStyle(document.documentElement);
+    return {
+        borderColor: styles.getPropertyValue('--ripple-cell-border').trim() || DEFAULTS.borderColor,
+        fillColor: styles.getPropertyValue('--ripple-cell-bg').trim() || DEFAULTS.fillColor,
+    };
+}
+
 function getPageHeight() {
     return Math.max(
         document.body.scrollHeight,
@@ -91,7 +99,7 @@ export function initBackgroundRipple(containerId, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) return null;
 
-    const config = { ...DEFAULTS, ...options };
+    const config = { ...DEFAULTS, ...options, ...getThemeRippleColors() };
     let state = buildGrid(container, config);
     let resizeTimer = null;
     let scrollTimer = null;
@@ -154,6 +162,7 @@ export function initBackgroundRipple(containerId, options = {}) {
     let lastBodyHeight = 0;
 
     const refresh = () => {
+        Object.assign(config, getThemeRippleColors());
         clearActiveRipple();
         hoveredCell = null;
         state = buildGrid(container, config);
