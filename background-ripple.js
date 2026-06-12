@@ -150,16 +150,29 @@ export function initBackgroundRipple(containerId, options = {}) {
         hoveredCell = setHoveredCell(hoveredCell, getCellAt(state, coords.row, coords.col));
     };
 
+    let lastBodyWidth = 0;
+    let lastBodyHeight = 0;
+
     const refresh = () => {
         clearActiveRipple();
         hoveredCell = null;
         state = buildGrid(container, config);
+        lastBodyWidth = document.body.clientWidth;
+        lastBodyHeight = document.body.clientHeight;
     };
 
     const scheduleRefresh = () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(refresh, 200);
+        resizeTimer = setTimeout(() => {
+            const w = document.body.clientWidth;
+            const h = document.body.clientHeight;
+            if (w === lastBodyWidth && h === lastBodyHeight) return;
+            refresh();
+        }, 200);
     };
+
+    lastBodyWidth = document.body.clientWidth;
+    lastBodyHeight = document.body.clientHeight;
 
     const onPointerMove = (e) => {
         lastPointer.x = e.clientX;

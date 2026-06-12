@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500&family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
         rel="stylesheet">
 </head>
 
@@ -52,11 +52,12 @@
                     <a href="#projects" class="announcement-pill reveal">
                         Building high-performance systems <span class="pill-arrow">→</span>
                     </a>
-                    <h1 class="hero-headline reveal">
-                        Software engineer crafting scalable, future-ready products.
+                    <h1 class="hero-name reveal">
+                        <span class="hero-name-line">Harshil</span>
+                        <span class="hero-name-line">Parekh</span>
                     </h1>
                     <p class="hero-subtext reveal">
-                        Full-stack engineering, AI/ML, and physics simulations — focused on systems that scale and interfaces that disappear.
+                        Software engineer crafting scalable, future-ready products.
                     </p>
                     <div class="hero-actions reveal">
                         <a href="#projects" class="btn-primary-outline">View projects</a>
@@ -118,73 +119,20 @@
             </div>
         </section>
 
-        <section id="projects" class="section projects-section">
-            <div id="projects-lamp" class="projects-lamp-wrap">
-                <div class="container lamp__content">
-                    <div class="section-header lamp__heading">
-                        <p class="section-eyebrow">Work</p>
-                        <h2 class="section-heading">Featured projects.</h2>
-                    </div>
+        <section id="projects" class="section projects-vortex-section">
+            <div id="projects-vortex" class="vortex-bg" aria-hidden="true"></div>
+            <div class="vortex-vignette" aria-hidden="true"></div>
+            <div class="container projects-content">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Work</p>
+                    <h2 class="section-heading">Featured projects.</h2>
                 </div>
-            </div>
-            <div class="container">
-                <div class="projects-grid">
-                    <article class="project-card feature-card"
-                        onclick="window.open('https://github.com/harshilparekh874/blackhole','_blank')">
-                        <div class="project-thumb" style="background-image: url('assets/project1.png')"></div>
-                        <div class="project-card-body">
-                            <h3>Black Hole Simulation</h3>
-                            <p>An interactive General Relativity simulator built with C++ and OpenGL Shaders.</p>
-                        </div>
-                    </article>
-                    <article class="project-card feature-card"
-                        onclick="window.open('https://filmstrip-two.vercel.app/','_blank')">
-                        <div class="project-thumb" style="background-image: url('assets/project2.png')"></div>
-                        <div class="project-card-body">
-                            <h3>Filmstrip</h3>
-                            <p>Movie tracking app with social features built with React and Node.js.</p>
-                        </div>
-                    </article>
-                    <article class="project-card feature-card"
-                        onclick="window.open('https://github.com/harshilparekh874/Physics-Sim','_blank')">
-                        <div class="project-thumb" style="background-image: url('assets/project3.png')"></div>
-                        <div class="project-card-body">
-                            <h3>Physics Sim — Kinetic Shapes</h3>
-                            <p>A physics sandbox for experimenting with variable gravity and collision dynamics.</p>
-                        </div>
-                    </article>
-                    <article class="project-card feature-card"
-                        onclick="window.open('https://github.com/harshilparekh874/googledrive-clone','_blank')">
-                        <div class="project-thumb" style="background-image: url('assets/project4.png')"></div>
-                        <div class="project-card-body">
-                            <h3>Google Drive Clone</h3>
-                            <p>A full-featured cloud storage clone with file management and sharing.</p>
-                        </div>
-                    </article>
-                    <article class="project-card feature-card"
-                        onclick="window.open('https://github.com/harshilparekh874/Football-Tracking-Project','_blank')">
-                        <div class="project-thumb" style="background-image: url('assets/project5.png')"></div>
-                        <div class="project-card-body">
-                            <h3>Object Detection — FIFA</h3>
-                            <p>Object detection for FIFA Bundesliga match footage.</p>
-                        </div>
-                    </article>
-                    <article class="project-card feature-card"
-                        onclick="window.open('https://github.com/harshilparekh874/Function-Calling-Kitchen','_blank')">
-                        <div class="project-thumb" style="background-image: url('assets/project6.png')"></div>
-                        <div class="project-card-body">
-                            <h3>Function Calling Kitchen</h3>
-                            <p>Interactive cooking simulator orchestrating sequences of LLM function calls.</p>
-                        </div>
-                    </article>
-                </div>
+                <div class="expandable-projects reveal" id="expandable-projects"></div>
             </div>
         </section>
 
-        <section id="experience" class="section experience-vortex-section">
-            <div id="experience-vortex" class="vortex-bg" aria-hidden="true"></div>
-            <div class="vortex-vignette" aria-hidden="true"></div>
-            <div class="container experience-content">
+        <section id="experience" class="section experience-section">
+            <div class="container">
                 <div class="section-header reveal">
                     <p class="section-eyebrow">Career</p>
                     <h2 class="section-heading">Experience.</h2>

@@ -190,13 +190,25 @@ export function initVortex(containerEl, options = {}) {
 
     observer?.observe(container);
 
+    let lastWidth = 0;
+    let lastHeight = 0;
+
     const onResize = () => {
+        const { width, height } = container.getBoundingClientRect();
+        const w = Math.round(width);
+        const h = Math.round(height);
+        if (w === lastWidth && h === lastHeight) return;
+
+        lastWidth = w;
+        lastHeight = h;
         resize();
         initParticles();
     };
 
     resize();
     initParticles();
+    lastWidth = Math.round(container.getBoundingClientRect().width);
+    lastHeight = Math.round(container.getBoundingClientRect().height);
     draw();
 
     window.addEventListener('resize', onResize);

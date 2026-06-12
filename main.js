@@ -3,8 +3,8 @@ import { initStackCards } from './stack-cards.js';
 import { RubikCube } from './rubikscube.js';
 import { initVortex } from './vortex.js';
 import { initWobbleCards } from './wobble-card.js';
+import { initExpandableProjects } from './expandable-projects.js';
 import { initSpotlight } from './spotlight.js';
-import { initLamp } from './lamp.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -19,8 +19,8 @@ try {
     console.error('Rubik cube failed to initialize:', error);
 }
 initSpotlight('hero-spotlight');
-initLamp('projects-lamp');
-initVortex('experience-vortex', {
+
+initVortex('projects-vortex', {
     baseHue: 142,
     rangeHue: 36,
     saturation: 68,
@@ -28,7 +28,8 @@ initVortex('experience-vortex', {
     backgroundColor: 'transparent',
     particleCount: 600,
 });
-initWobbleCards();
+initWobbleCards('.timeline-item');
+initExpandableProjects();
 initStackCards();
 
 const header = document.getElementById('header');
@@ -99,7 +100,7 @@ gsap.utils.toArray('.reveal').forEach((el) => {
     }
 });
 
-ScrollTrigger.batch('.project-card', {
+ScrollTrigger.batch('.expandable-project-item', {
     onEnter: (batch) =>
         gsap.to(batch, {
             opacity: 1,
