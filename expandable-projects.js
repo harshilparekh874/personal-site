@@ -1,45 +1,51 @@
 import gsap from 'gsap';
+import project1Img from './assets/project1.png';
+import project2Img from './assets/project2.png';
+import project3Img from './assets/project3.png';
+import project4Img from './assets/project4.png';
+import project5Img from './assets/project5.png';
+import project6Img from './assets/project6.png';
 
 const PROJECTS = [
     {
         title: 'Black Hole Simulation',
         description: 'C++ · OpenGL · General Relativity',
-        src: 'assets/project1.png',
+        src: project1Img,
         ctaLink: 'https://github.com/harshilparekh874/blackhole',
         content: `A high-performance, real-time General Relativity simulator that visualizes spacetime curvature around black holes. Built with C++ and OpenGL compute shaders, it renders gravitational lensing, accretion disks, and frame-dragging with interactive camera controls.`,
     },
     {
         title: 'Filmstrip',
         description: 'React · Node.js · Movie tracking',
-        src: 'assets/project2.png',
+        src: project2Img,
         ctaLink: 'https://github.com/harshilparekh874/Filmstrip',
         content: `A full-stack movie tracking app where you log films, rate and review titles, and follow friends' watchlists. React frontend, Node.js API, and social discovery features — deployed live on Vercel.`,
     },
     {
         title: 'Physics Sim — Kinetic Shapes',
         description: 'Physics sandbox · Collision dynamics',
-        src: 'assets/project3.png',
+        src: project3Img,
         ctaLink: 'https://github.com/harshilparekh874/Physics-Sim',
         content: `An interactive physics playground for experimenting with variable gravity, elastic collisions, and custom shape dynamics. Tune parameters in real time and watch how kinetic systems evolve under different forces.`,
     },
     {
         title: 'Google Drive Clone',
         description: 'Cloud storage · File management',
-        src: 'assets/project4.png',
+        src: project4Img,
         ctaLink: 'https://github.com/harshilparekh874/googledrive-clone',
         content: `A full-featured cloud storage clone with upload, folder hierarchy, sharing permissions, and search. Recreates the core Drive experience end to end — from drag-and-drop uploads to organized file browsing.`,
     },
     {
         title: 'Object Detection — FIFA',
         description: 'Computer vision · Bundesliga footage',
-        src: 'assets/project5.png',
+        src: project5Img,
         ctaLink: 'https://github.com/harshilparekh874/Football-Tracking-Project',
         content: `A computer vision pipeline for detecting players and the ball in FIFA Bundesliga match footage. Trained and evaluated on real broadcast video to support sports analytics and automated tracking workflows.`,
     },
     {
         title: 'Function Calling Kitchen',
         description: 'LLMs · Tool use · Interactive demo',
-        src: 'assets/project6.png',
+        src: project6Img,
         ctaLink: 'https://github.com/harshilparekh874/Function-Calling-Kitchen',
         content: `An interactive cooking simulator that orchestrates sequences of LLM function calls — chop, sauté, season, and plate ingredients through structured tool use. Demonstrates multi-step agent workflows in a playful, visual interface.`,
     },
