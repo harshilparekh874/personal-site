@@ -1418,7 +1418,8 @@ html.js-ready .reveal {
         align-items: flex-start;
         text-align: left;
         max-width: none;
-        padding-inline: 0;
+        padding-left: clamp(1.5rem, 4vw, 3.5rem);
+        padding-right: clamp(0.75rem, 2vw, 1.5rem);
     }
 
     .hero-name {
