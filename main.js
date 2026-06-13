@@ -2,10 +2,12 @@ import { initBackgroundRipple } from './background-ripple.js';
 import { initStackCards } from './stack-cards.js';
 import { RubikCube } from './rubikscube.js';
 import { initVortex } from './vortex.js';
-import { initWobbleCards } from './wobble-card.js';
+import { initMagicCards, refreshMagicCardThemes } from './magic-card.js';
 import { initExpandableProjects } from './expandable-projects.js';
 import { initSpotlight } from './spotlight.js';
 import { initTheme } from './theme.js';
+import { initKineticText } from './kinetic-text.js';
+import { initSocialButtons } from './social-buttons.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,9 +15,14 @@ document.documentElement.classList.add('js-ready');
 gsap.registerPlugin(ScrollTrigger);
 
 initTheme();
+initKineticText('.hero-name-line');
+initSocialButtons('#contact-socials');
 
 const siteRipple = initBackgroundRipple('site-ripple');
-window.addEventListener('themechange', () => siteRipple?.refresh?.());
+window.addEventListener('themechange', () => {
+    siteRipple?.refresh?.();
+    refreshMagicCardThemes();
+});
 
 try {
     new RubikCube('cube-canvas');
@@ -32,7 +39,7 @@ initVortex('projects-vortex', {
     backgroundColor: 'transparent',
     particleCount: 600,
 });
-initWobbleCards('.timeline-item');
+initMagicCards('.experience-section .magic-card');
 initExpandableProjects();
 initStackCards();
 

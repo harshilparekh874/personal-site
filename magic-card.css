@@ -1,0 +1,106 @@
+.magic-card {
+    --magic-x: -200px;
+    --magic-y: -200px;
+    --magic-gradient-size: 200px;
+    --magic-gradient-from: #9e7aff;
+    --magic-gradient-to: #fe8bbb;
+    --magic-gradient-color: #262626;
+    --magic-bg: var(--color-void-black);
+    --magic-border: var(--color-graphite-rail);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--radius-cards);
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--magic-bg) 0 0) padding-box,
+        radial-gradient(
+            var(--magic-gradient-size) circle at var(--magic-x) var(--magic-y),
+            var(--magic-gradient-from),
+            var(--magic-gradient-to),
+            var(--magic-border) 100%
+        )
+        border-box;
+}
+
+.magic-card__bg {
+    position: absolute;
+    inset: 1px;
+    z-index: 1;
+    border-radius: calc(var(--radius-cards) - 1px);
+    background: var(--magic-bg);
+    pointer-events: none;
+}
+
+.magic-card__glow {
+    position: absolute;
+    inset: 1px;
+    z-index: 2;
+    border-radius: calc(var(--radius-cards) - 1px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: radial-gradient(
+        var(--magic-gradient-size) circle at var(--magic-x) var(--magic-y),
+        var(--magic-gradient-color),
+        transparent 100%
+    );
+}
+
+.magic-card:hover .magic-card__glow,
+.magic-card:focus-within .magic-card__glow {
+    opacity: 0.8;
+}
+
+.magic-card__content {
+    position: relative;
+    z-index: 3;
+}
+
+.experience-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-16);
+    padding: var(--spacing-20);
+    border-bottom: 1px solid var(--color-graphite-rail);
+}
+
+.experience-card__header-text {
+    min-width: 0;
+}
+
+.experience-card__title {
+    font-family: var(--font-inter);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-pure-white);
+    margin: 0;
+}
+
+.experience-card__company {
+    margin: var(--spacing-4) 0 0;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body-sm);
+    color: var(--color-fog);
+}
+
+.experience-card__body {
+    padding: var(--spacing-20);
+}
+
+.experience-card__footer {
+    padding: var(--spacing-16) var(--spacing-20);
+    border-top: 1px solid var(--color-graphite-rail);
+}
+
+.experience-section .timeline-logo {
+    background: var(--magic-bg);
+}
+
+.experience-section .company-name {
+    color: var(--color-resend-violet);
+}
+
+[data-theme="light"] .magic-card {
+    --magic-gradient-color: rgba(217, 217, 217, 0.33);
+}

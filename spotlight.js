@@ -1,12 +1,6 @@
 import gsap from 'gsap';
 
-const DEFAULTS = {
-    gradientFirst:
-        'radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(210, 100%, 85%, .12) 0, hsla(210, 100%, 55%, .04) 50%, hsla(210, 100%, 45%, 0) 80%)',
-    gradientSecond:
-        'radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .09) 0, hsla(210, 100%, 55%, .035) 80%, transparent 100%)',
-    gradientThird:
-        'radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .06) 0, hsla(210, 100%, 45%, .035) 80%, transparent 100%)',
+const SHARED = {
     translateY: -350,
     width: 560,
     height: 1380,
@@ -15,6 +9,31 @@ const DEFAULTS = {
     xOffset: 100,
 };
 
+const DARK_GRADIENTS = {
+    gradientFirst:
+        'radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(210, 100%, 90%, .22) 0, hsla(210, 100%, 62%, .09) 50%, hsla(210, 100%, 50%, 0) 80%)',
+    gradientSecond:
+        'radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 88%, .16) 0, hsla(210, 100%, 58%, .06) 80%, transparent 100%)',
+    gradientThird:
+        'radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 86%, .12) 0, hsla(210, 100%, 52%, .06) 80%, transparent 100%)',
+};
+
+const LIGHT_GRADIENTS = {
+    gradientFirst:
+        'radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(272, 95%, 52%, .15) 0, hsla(265, 92%, 42%, .06) 50%, hsla(278, 85%, 35%, 0) 80%)',
+    gradientSecond:
+        'radial-gradient(50% 50% at 50% 50%, hsla(278, 92%, 48%, .11) 0, hsla(268, 88%, 38%, .05) 80%, transparent 100%)',
+    gradientThird:
+        'radial-gradient(50% 50% at 50% 50%, hsla(284, 90%, 46%, .08) 0, hsla(270, 85%, 36%, .045) 80%, transparent 100%)',
+};
+
+function getThemeGradients(theme = document.documentElement.getAttribute('data-theme')) {
+    return theme === 'light' ? LIGHT_GRADIENTS : DARK_GRADIENTS;
+}
+
+function getConfig(theme) {
+    return { ...SHARED, ...getThemeGradients(theme) };
+}
 function scaleConfig(base, viewportWidth) {
     const scale = Math.max(Math.min(viewportWidth / 1280, 1.35), 0.55);
     return {
@@ -85,13 +104,30 @@ function buildSide(side, config, size) {
     return group;
 }
 
+function applySpotlightTheme(root, theme) {
+    const gradients = getThemeGradients(theme);
+    root.dataset.theme = theme;
+
+    root.querySelectorAll('.spotlight-beam--main').forEach((beam) => {
+        beam.style.background = gradients.gradientFirst;
+    });
+    root.querySelectorAll('.spotlight-beam--secondary').forEach((beam) => {
+        beam.style.background = gradients.gradientSecond;
+    });
+    root.querySelectorAll('.spotlight-beam--tertiary').forEach((beam) => {
+        beam.style.background = gradients.gradientThird;
+    });
+}
+
 export function initSpotlight(containerId, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) return null;
 
-    const config = { ...DEFAULTS, ...options };
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const config = { ...getConfig(theme), ...options };
     const root = document.createElement('div');
     root.className = 'spotlight-root';
+    root.dataset.theme = theme;
 
     const left = buildSide('left', config, scaleConfig(config, window.innerWidth));
     const right = buildSide('right', config, scaleConfig(config, window.innerWidth));
@@ -137,5 +173,16 @@ export function initSpotlight(containerId, options = {}) {
 
     window.addEventListener('resize', onResize);
 
-    return { destroy: () => window.removeEventListener('resize', onResize) };
+    const onThemeChange = (event) => {
+        applySpotlightTheme(root, event.detail?.theme || 'dark');
+    };
+
+    window.addEventListener('themechange', onThemeChange);
+
+    return {
+        destroy: () => {
+            window.removeEventListener('resize', onResize);
+            window.removeEventListener('themechange', onThemeChange);
+        },
+    };
 }

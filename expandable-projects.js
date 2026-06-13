@@ -12,17 +12,17 @@ const PROJECTS = [
         description: 'C++ · OpenGL · General Relativity',
         src: project1Img,
         ctaLink: 'https://github.com/harshilparekh874/blackhole',
-        content: `A high-performance, real-time General Relativity simulator that visualizes spacetime curvature around black holes. Built with C++ and OpenGL compute shaders, it renders gravitational lensing, accretion disks, and frame-dragging with interactive camera controls.`,
+        content: `A real-time General Relativity simulator that shows spacetime bending around black holes. Built with C++ and OpenGL compute shaders, with gravitational lensing, accretion disks, frame-dragging, and a camera you can move around freely.`,
     },
     {
         title: 'Filmstrip',
         description: 'React · Node.js · Movie tracking',
         src: project2Img,
         ctaLink: 'https://github.com/harshilparekh874/Filmstrip',
-        content: `A full-stack movie tracking app where you log films, rate and review titles, and follow friends' watchlists. React frontend, Node.js API, and social discovery features — deployed live on Vercel.`,
+        content: `A full-stack movie tracking app where you log films, rate and review titles, and follow friends' watchlists. React frontend, Node.js API, social discovery, and it's live on Vercel.`,
     },
     {
-        title: 'Physics Sim — Kinetic Shapes',
+        title: 'Physics Sim, Kinetic Shapes',
         description: 'Physics sandbox · Collision dynamics',
         src: project3Img,
         ctaLink: 'https://github.com/harshilparekh874/Physics-Sim',
@@ -33,10 +33,10 @@ const PROJECTS = [
         description: 'Cloud storage · File management',
         src: project4Img,
         ctaLink: 'https://github.com/harshilparekh874/googledrive-clone',
-        content: `A full-featured cloud storage clone with upload, folder hierarchy, sharing permissions, and search. Recreates the core Drive experience end to end — from drag-and-drop uploads to organized file browsing.`,
+        content: `A full-featured cloud storage clone with upload, folder hierarchy, sharing permissions, and search. It covers the core Drive flow, from drag-and-drop uploads to organized file browsing.`,
     },
     {
-        title: 'Object Detection — FIFA',
+        title: 'Object Detection for FIFA',
         description: 'Computer vision · Bundesliga footage',
         src: project5Img,
         ctaLink: 'https://github.com/harshilparekh874/Football-Tracking-Project',
@@ -47,7 +47,7 @@ const PROJECTS = [
         description: 'LLMs · Tool use · Interactive demo',
         src: project6Img,
         ctaLink: 'https://github.com/harshilparekh874/Function-Calling-Kitchen',
-        content: `An interactive cooking simulator that orchestrates sequences of LLM function calls — chop, sauté, season, and plate ingredients through structured tool use. Demonstrates multi-step agent workflows in a playful, visual interface.`,
+        content: `An interactive cooking simulator built around LLM function calls. Chop, sauté, season, and plate ingredients through structured tool use, which makes multi-step agent workflows easy to follow.`,
     },
 ];
 

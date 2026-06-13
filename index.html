@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="design/variables.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="theme-toggle.css">
+    <link rel="stylesheet" href="kinetic-text.css">
+    <link rel="stylesheet" href="social-icons.css">
+    <link rel="stylesheet" href="magic-card.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -115,14 +118,14 @@
             <div class="hero-inner container">
                 <div class="hero-copy">
                     <a href="#projects" class="announcement-pill reveal">
-                        Building high-performance systems <span class="pill-arrow">→</span>
+                        Building things that run fast <span class="pill-arrow">→</span>
                     </a>
                     <h1 class="hero-name reveal">
-                        <span class="hero-name-line">Harshil</span>
-                        <span class="hero-name-line">Parekh</span>
+                        <span class="hero-name-line kinetic-text">Harshil</span>
+                        <span class="hero-name-line kinetic-text">Parekh</span>
                     </h1>
                     <p class="hero-subtext reveal">
-                        Software engineer crafting scalable, future-ready products.
+                        I build fast, reliable software and like keeping things simple.
                     </p>
                     <div class="hero-actions reveal">
                         <a href="#projects" class="btn-primary-outline">View projects</a>
@@ -152,15 +155,15 @@
             <div class="container">
                 <div class="section-header reveal">
                     <p class="section-eyebrow">About</p>
-                    <h2 class="section-heading">Engineering with intent.</h2>
+                    <h2 class="section-heading">How I like to build.</h2>
                 </div>
                 <div class="about-grid">
                     <div class="about-image reveal">
                         <img src="assets/profile.jpeg" alt="Harshil Parekh">
                     </div>
                     <div class="about-text reveal">
-                        <p class="about-lead">I'm a software engineering student interested in full-stack engineering, AI/ML, and quantum computing, focused on building scalable and future-ready systems.</p>
-                        <p class="about-body">From WebGL physics simulations to production mobile apps — I care about performance, clean architecture, and shipping work that holds up under real constraints.</p>
+                        <p class="about-lead">I'm a software engineering student who likes full-stack work, AI/ML, and quantum computing. Mostly I just enjoy building things that scale well and still make sense six months later.</p>
+                        <p class="about-body">I've worked on everything from WebGL physics sims to production mobile apps. I care about performance, clean architecture, and shipping work that holds up in the real world.</p>
                     </div>
                 </div>
             </div>
@@ -171,7 +174,7 @@
                 <div class="section-header reveal">
                     <p class="section-eyebrow">Skills</p>
                     <h2 class="section-heading">Technical stack.</h2>
-                    <p class="section-desc">Drag cards off the pile, throw them around, or snap one into the slot to read what it is.</p>
+                    <p class="section-desc">Drag cards off the pile, toss them around, or drop one in the slot to see what it is.</p>
                 </div>
                 <div class="stack-cards-wrap reveal">
                     <div class="stack-cards-actions">
@@ -203,43 +206,73 @@
                     <h2 class="section-heading">Experience.</h2>
                 </div>
                 <div class="timeline">
-                    <article class="timeline-item feature-card reveal">
-                        <div class="timeline-logo">
-                            <span class="logo-placeholder">IL</span>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3>Software Engineer</h3>
-                                <span class="timeline-date">Apr 2025 — Jan 2026</span>
+                    <article class="timeline-item reveal">
+                        <div class="magic-card">
+                            <div class="magic-card__bg" aria-hidden="true"></div>
+                            <div class="magic-card__glow" aria-hidden="true"></div>
+                            <div class="magic-card__content experience-card">
+                                <header class="experience-card__header">
+                                    <div class="timeline-logo">
+                                        <span class="logo-placeholder">RC</span>
+                                    </div>
+                                    <div class="experience-card__header-text">
+                                        <h3 class="experience-card__title">Software Engineer</h3>
+                                        <p class="experience-card__company">Rogers Communications</p>
+                                    </div>
+                                </header>
+                                <div class="experience-card__body">
+                                    <p class="timeline-desc">Built a cross-platform Electron diagnostics app with SSO, SQL, and offline support. It automated mobile device health checks, cut testing time by 60-70%, and doubled trade-in throughput.</p>
+                                </div>
+                                <footer class="experience-card__footer">
+                                    <span class="timeline-date">Apr 2025 - Jan 2026</span>
+                                </footer>
                             </div>
-                            <p class="company-name">Rogers Communications</p>
-                            <p class="timeline-desc">Designed a cross-platform Electron diagnostics app with secure SSO/SQL integration and offline support that automated mobile device health checks and cut testing time by 60–70%, doubling trade-in throughput.</p>
                         </div>
                     </article>
-                    <article class="timeline-item feature-card reveal">
-                        <div class="timeline-logo">
-                            <span class="logo-placeholder">RM</span>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3>Technical Intern — Mobile App Lead</h3>
-                                <span class="timeline-date">Apr 2025 — Sep 2025</span>
+                    <article class="timeline-item reveal">
+                        <div class="magic-card">
+                            <div class="magic-card__bg" aria-hidden="true"></div>
+                            <div class="magic-card__glow" aria-hidden="true"></div>
+                            <div class="magic-card__content experience-card">
+                                <header class="experience-card__header">
+                                    <div class="timeline-logo">
+                                        <span class="logo-placeholder">RM</span>
+                                    </div>
+                                    <div class="experience-card__header-text">
+                                        <h3 class="experience-card__title">Technical Intern, Mobile App Lead</h3>
+                                        <p class="experience-card__company">ReliablyMe</p>
+                                    </div>
+                                </header>
+                                <div class="experience-card__body">
+                                    <p class="timeline-desc">Led development on a React Native and Firebase app with GPT-4 built in. Shipped a trust-tracking platform that improved engagement accuracy by 35% and cut latency by 40%.</p>
+                                </div>
+                                <footer class="experience-card__footer">
+                                    <span class="timeline-date">Apr 2025 - Sep 2025</span>
+                                </footer>
                             </div>
-                            <p class="company-name">ReliablyMe</p>
-                            <p class="timeline-desc">Led a React Native/Firebase mobile app with GPT-4 integration that delivered a scalable trust-tracking platform, improving engagement accuracy by 35% and reducing latency by 40%.</p>
                         </div>
                     </article>
-                    <article class="timeline-item feature-card reveal">
-                        <div class="timeline-logo">
-                            <span class="logo-placeholder">IL</span>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3>Webmaster Intern</h3>
-                                <span class="timeline-date">Apr 2023 — Sep 2023</span>
+                    <article class="timeline-item reveal">
+                        <div class="magic-card">
+                            <div class="magic-card__bg" aria-hidden="true"></div>
+                            <div class="magic-card__glow" aria-hidden="true"></div>
+                            <div class="magic-card__content experience-card">
+                                <header class="experience-card__header">
+                                    <div class="timeline-logo">
+                                        <span class="logo-placeholder">IL</span>
+                                    </div>
+                                    <div class="experience-card__header-text">
+                                        <h3 class="experience-card__title">Webmaster Intern</h3>
+                                        <p class="experience-card__company">Iron Logic</p>
+                                    </div>
+                                </header>
+                                <div class="experience-card__body">
+                                    <p class="timeline-desc">Helped improve system reliability by securing customer accounts, speeding up support responses by 40%, and cutting downtime by 35%.</p>
+                                </div>
+                                <footer class="experience-card__footer">
+                                    <span class="timeline-date">Apr 2023 - Sep 2023</span>
+                                </footer>
                             </div>
-                            <p class="company-name">Iron Logic</p>
-                            <p class="timeline-desc">Improved system reliability and customer satisfaction by securing customer accounts, accelerating support response times by 40%, and reducing downtime by 35%.</p>
                         </div>
                     </article>
                 </div>
@@ -248,17 +281,19 @@
 
         <section id="contact" class="section">
             <div class="container contact-section">
-                <div class="section-header reveal">
-                    <h2 class="section-heading display-close">Let's build something extraordinary.</h2>
-                    <p class="section-desc">Open to collaborations, internships, and ambitious side projects.</p>
-                </div>
-                <div class="contact-actions reveal">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshilparekh874@gmail.com"
-                        target="_blank" rel="noopener" class="btn-primary-outline">Email me</a>
-                    <div class="social-row">
-                        <a href="https://www.linkedin.com/in/harshil-parekh-42a590282/" class="btn-ghost-text" target="_blank" rel="noopener">LinkedIn</a>
-                        <a href="https://github.com/harshilparekh874" class="btn-ghost-text" target="_blank" rel="noopener">GitHub</a>
-                        <a href="https://www.instagram.com/harshillparekhh/" class="btn-ghost-text" target="_blank" rel="noopener">Instagram</a>
+                <div class="contact-grid">
+                    <div class="contact-copy">
+                        <div class="section-header reveal">
+                            <h2 class="section-heading display-close">Let's build something extraordinary.</h2>
+                            <p class="section-desc">Happy to chat about internships, side projects, or anything interesting you're building.</p>
+                        </div>
+                        <div class="contact-actions reveal">
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshilparekh874@gmail.com"
+                                target="_blank" rel="noopener" class="btn-primary-outline">Email me</a>
+                        </div>
+                    </div>
+                    <div class="contact-social-wrap reveal">
+                        <div id="contact-socials" class="contact-socials"></div>
                     </div>
                 </div>
             </div>
