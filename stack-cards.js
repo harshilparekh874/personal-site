@@ -662,19 +662,6 @@ export function initStackCards({
             applyTransform(dockedCard);
         }
 
-        if (hasOffScreenCards() || isReturning || activeCard) {
-            updateLabelReveal();
-            return;
-        }
-
-        cards.forEach((card) => {
-            if (card.docked) return;
-            const layout = messyLayout();
-            card.x = layout.x;
-            card.y = layout.y;
-            card.rotate = layout.rotate;
-            applyTransform(card);
-        });
         updateLabelReveal();
     };
 

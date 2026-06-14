@@ -768,13 +768,20 @@ a {
 
 .stack-cards-actions {
     position: absolute;
-    top: 0;
+    top: var(--spacing-48);
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, calc(-100% - var(--spacing-12)));
     z-index: 200;
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: max-content;
     gap: var(--spacing-12);
+    pointer-events: none;
+}
+
+.stack-cards-actions .return-stack-cards.is-visible {
+    pointer-events: auto;
 }
 
 .return-stack-cards {
