@@ -64,6 +64,19 @@ if (mobileMenuBtn && navBar) {
     });
 }
 
+function closeMobileNav() {
+    mobileMenuBtn?.classList.remove('active');
+    navBar?.classList.remove('menu-open');
+}
+
+function scrollToPageBottom() {
+    const maxScroll = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight,
+    );
+    window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+}
+
 window.addEventListener('scroll', () => {
     header?.classList.toggle('scrolled', window.scrollY > 50);
 });
@@ -73,8 +86,16 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         const href = this.getAttribute('href');
         if (href === '#') return;
         e.preventDefault();
+
+        if (href === '#contact') {
+            closeMobileNav();
+            scrollToPageBottom();
+            return;
+        }
+
         const target = document.querySelector(href);
         if (target) {
+            closeMobileNav();
             const headerHeight = header?.offsetHeight ?? 59;
             window.scrollTo({
                 top: target.offsetTop - headerHeight,
