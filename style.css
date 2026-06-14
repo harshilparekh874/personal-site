@@ -1326,7 +1326,7 @@ a {
 /* ── Contact ── */
 
 .contact-section.section {
-    padding: var(--spacing-96) 0 0;
+    padding: clamp(11rem, 20vw, 16rem) 0 0;
     text-align: left;
 }
 
@@ -1368,9 +1368,17 @@ a {
 
 @media (min-width: 900px) {
     .contact-grid {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
         gap: var(--spacing-64);
         align-items: stretch;
+    }
+
+    .contact-left {
+        min-height: 100%;
+    }
+
+    .contact-copy {
+        padding-top: clamp(3.5rem, 20vh, 9rem);
     }
 
     .contact-copyright {
@@ -1585,7 +1593,7 @@ html.js-ready .reveal {
     }
 
     .contact-section.section {
-        padding-top: var(--spacing-64);
+        padding-top: clamp(7rem, 14vw, 10rem);
     }
 
     .section-header {
@@ -1597,7 +1605,50 @@ html.js-ready .reveal {
     }
 
     .stack-cards-stage {
-        min-height: min(560px, 72vh);
+        min-height: min(440px, 60vh);
+    }
+
+    .stack-cards-label {
+        font-size: clamp(1.25rem, 4.5vw, 1.75rem);
+    }
+
+    .stack-card {
+        width: 118px;
+        height: 172px;
+    }
+
+    .stack-card__inner {
+        padding: 10px 10px 12px;
+        border-radius: 10px;
+    }
+
+    .stack-card__icon {
+        width: 54px;
+        height: 54px;
+    }
+
+    .stack-card__title {
+        font-size: 0.6875rem;
+        line-height: 1.25;
+    }
+
+    .stack-card-slot__frame {
+        border-width: 2px;
+        border-radius: 10px;
+    }
+
+    .stack-card-slot__name {
+        margin-bottom: var(--spacing-8);
+        font-size: 1.0625rem;
+    }
+
+    .stack-card-slot__desc {
+        font-size: 0.8125rem;
+        line-height: 1.4;
+    }
+
+    .cube-action-wrap {
+        margin-top: -36px;
     }
 
     .expandable-projects {
@@ -1622,25 +1673,37 @@ html.js-ready .reveal {
 
 @media (max-width: 480px) {
     .stack-cards-stage {
-        min-height: min(480px, 62vh);
+        min-height: min(400px, 56vh);
     }
 
     .stack-card {
-        width: 168px;
-        height: 246px;
+        width: 102px;
+        height: 148px;
+    }
+
+    .stack-card__inner {
+        padding: 8px 8px 10px;
     }
 
     .stack-card__icon {
-        width: 80px;
-        height: 80px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .stack-card__title {
+        font-size: 0.625rem;
     }
 
     .stack-card-slot__name {
-        font-size: clamp(1.5rem, 6vw, 2rem);
+        font-size: 0.9375rem;
     }
 
     .stack-card-slot__desc {
-        font-size: clamp(1rem, 4.5vw, 1.25rem);
+        font-size: 0.75rem;
+    }
+
+    .cube-action-wrap {
+        margin-top: -18px;
     }
 
     .hero-inner {

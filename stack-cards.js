@@ -114,24 +114,34 @@ export function initStackCards({
         };
     }
 
+    function isCompactLayout() {
+        return stageSize().width < 768;
+    }
+
+    function spreadScale() {
+        return isCompactLayout() ? 0.48 : 1;
+    }
+
     function pileCenter() {
         const { width, height } = stageSize();
         const { width: cardW, height: cardH } = cardSize();
+        const compact = isCompactLayout();
         return {
-            x: width * 0.5 - cardW * 0.5,
-            y: height * 0.44 - cardH * 0.5,
+            x: (compact ? width * 0.3 : width * 0.5) - cardW * 0.5,
+            y: (compact ? height * 0.36 : height * 0.44) - cardH * 0.5,
         };
     }
 
     function slotLayout() {
         const { width, height } = stageSize();
         const { width: cardW, height: cardH } = cardSize();
-        const padding = clamp(width * 0.04, 16, 48);
+        const compact = isCompactLayout();
+        const padding = compact ? clamp(width * 0.03, 8, 14) : clamp(width * 0.04, 16, 48);
 
-        if (width < 720) {
+        if (compact) {
             return {
                 x: width - cardW - padding,
-                y: clamp(height * 0.12, 56, height * 0.2),
+                y: clamp(height * 0.08, 36, height * 0.14),
                 rotate: 0,
             };
         }
@@ -145,14 +155,21 @@ export function initStackCards({
 
     function layoutSlotFrame() {
         const layout = slotLayout();
+        const { width } = stageSize();
         const { width: cardW, height: cardH } = cardSize();
+        const compact = isCompactLayout();
+        const detailGap = compact ? 10 : 24;
+        const detailWidth = compact
+            ? Math.min(Math.max(cardW + 12, 120), width - layout.x - 8)
+            : Math.max(cardW + 80, 320);
+
         slotFrame.style.width = `${cardW}px`;
         slotFrame.style.height = `${cardH}px`;
         slotFrame.style.transform = `translate3d(${layout.x}px, ${layout.y}px, 0)`;
         slotEl.style.setProperty('--slot-x', `${layout.x}px`);
-        slotEl.style.setProperty('--slot-y', `${layout.y + cardH + 24}px`);
+        slotEl.style.setProperty('--slot-y', `${layout.y + cardH + detailGap}px`);
         slotEl.style.setProperty('--slot-w', `${cardW}px`);
-        slotEl.style.setProperty('--slot-detail-w', `${Math.max(cardW + 80, 320)}px`);
+        slotEl.style.setProperty('--slot-detail-w', `${detailWidth}px`);
         return layout;
     }
 
@@ -185,10 +202,11 @@ export function initStackCards({
 
     function messyLayout() {
         const center = pileCenter();
+        const spread = spreadScale();
         return {
-            x: center.x + (Math.random() - 0.5) * SPREAD_X,
-            y: center.y + (Math.random() - 0.5) * SPREAD_Y,
-            rotate: (Math.random() - 0.5) * 14,
+            x: center.x + (Math.random() - 0.5) * SPREAD_X * spread,
+            y: center.y + (Math.random() - 0.5) * SPREAD_Y * spread,
+            rotate: (Math.random() - 0.5) * 14 * spread,
         };
     }
 

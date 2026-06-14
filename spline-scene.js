@@ -25,8 +25,9 @@ function fitContactSceneHeight(scene) {
 
     const isDesktop = window.innerWidth >= 900;
     const height = Math.min(
-        Math.round(width * (isDesktop ? 0.53 : 0.58)),
-        isDesktop ? 320 : 280
+        Math.round(width * (isDesktop ? 1.12 : 1.18)),
+        isDesktop ? 750 : 680,
+        Math.round(window.innerHeight * (isDesktop ? 0.78 : 0.72))
     );
 
     scene.style.setProperty('--spline-scene-height', `${height}px`);
@@ -60,7 +61,7 @@ async function loadScene(canvas, loader, sceneUrl) {
         const { Application } = await import('@splinetool/runtime');
         const app = new Application(canvas);
         await app.load(sceneUrl);
-        app.setZoom(window.innerWidth >= 900 ? 2.85 : 2.55);
+        app.setZoom(window.innerWidth >= 900 ? 7.1 : 6.35);
         app.setGlobalEvents(true);
         lockBodyLookAt(app);
 

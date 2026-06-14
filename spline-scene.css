@@ -10,7 +10,7 @@
 .spline-scene {
     position: relative;
     width: 100%;
-    height: var(--spline-scene-height, 280px);
+    height: var(--spline-scene-height, 680px);
     overflow: hidden;
     background: transparent;
 }
