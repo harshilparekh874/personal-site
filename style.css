@@ -340,7 +340,7 @@ a {
     grid-template-columns: 1fr;
     align-items: center;
     justify-items: center;
-    gap: var(--spacing-40);
+    gap: var(--spacing-56);
     padding: var(--spacing-64) 0 var(--spacing-80);
     min-width: 0;
 }
@@ -376,6 +376,11 @@ a {
 .hero-name-line {
     width: 100%;
     text-align: center;
+}
+
+.hero-name .kinetic-text {
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .hero-name .kinetic-text__letter {
@@ -1437,7 +1442,7 @@ html.js-ready .reveal {
     .hero-inner {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         justify-items: stretch;
-        gap: var(--spacing-48);
+        gap: var(--spacing-64);
         padding: var(--spacing-80) 0 var(--spacing-96);
     }
 
@@ -1448,7 +1453,7 @@ html.js-ready .reveal {
         text-align: left;
         max-width: none;
         padding-left: clamp(1.5rem, 4vw, 3.5rem);
-        padding-right: clamp(0.75rem, 2vw, 1.5rem);
+        padding-right: clamp(2rem, 5vw, 4rem);
     }
 
     .hero-name {
@@ -1487,6 +1492,7 @@ html.js-ready .reveal {
 @media (max-width: 1023px) {
     .hero-visual {
         order: -1;
+        margin-bottom: var(--spacing-16);
     }
 
     .hero-name {

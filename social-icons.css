@@ -9,9 +9,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     border-radius: 50%;
     color: var(--color-fog);
     text-decoration: none;
@@ -26,10 +26,16 @@
 }
 
 .icons-social-media svg {
-    width: 32px;
-    height: 32px;
+    width: 19px;
+    height: 19px;
     display: block;
+    flex-shrink: 0;
     transition: 300ms all ease-in-out;
+}
+
+#linkedin svg {
+    width: 17px;
+    height: 17px;
 }
 
 #linkedin:hover {
@@ -45,11 +51,6 @@
 #instagram:hover {
     background-color: rgb(221, 157, 189);
     color: #fff;
-}
-
-#medium {
-    width: 35px;
-    height: 35px;
 }
 
 #medium:hover {

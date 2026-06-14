@@ -37,7 +37,7 @@ function createSocialLink({ id, label, url, icon, viewBox }) {
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.setAttribute('aria-label', label);
-    link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="32" height="32" aria-hidden="true">${icon}</svg>`;
+    link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" aria-hidden="true">${icon}</svg>`;
     return link;
 }
 
