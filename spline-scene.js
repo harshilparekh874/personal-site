@@ -1,6 +1,8 @@
 const DEFAULT_SCENE =
     'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode';
 
+const BODY_LOCK_NAMES = ['Bot', 'Top part'];
+
 function createMarkup() {
     return `
         <div class="spline-scene">
@@ -17,30 +19,38 @@ function hideLoader(loader) {
     loader.classList.add('is-hidden');
 }
 
-function forwardPointerMoves(root, canvas) {
-    root.addEventListener('pointermove', (event) => {
-        if (event.target === canvas) return;
+function lockBodyLookAt(app) {
+    const locked = BODY_LOCK_NAMES.map((name) => app.findObjectByName(name))
+        .filter(Boolean)
+        .map((obj) => ({
+            obj,
+            rotation: {
+                x: obj.rotation.x,
+                y: obj.rotation.y,
+                z: obj.rotation.z,
+            },
+        }));
 
-        canvas.dispatchEvent(
-            new PointerEvent('pointermove', {
-                bubbles: true,
-                clientX: event.clientX,
-                clientY: event.clientY,
-                pointerId: event.pointerId,
-                pointerType: event.pointerType,
-            })
-        );
+    if (!locked.length) return;
+
+    app.addEventListener('rendered', () => {
+        for (const { obj, rotation } of locked) {
+            obj.rotation.x = rotation.x;
+            obj.rotation.y = rotation.y;
+            obj.rotation.z = rotation.z;
+        }
     });
 }
 
-async function loadScene(root, canvas, loader, sceneUrl) {
+async function loadScene(canvas, loader, sceneUrl) {
     try {
         const { Application } = await import('@splinetool/runtime');
         const app = new Application(canvas);
         await app.load(sceneUrl);
         app.setZoom(1.45);
+        app.setGlobalEvents(true);
+        lockBodyLookAt(app);
         hideLoader(loader);
-        forwardPointerMoves(root, canvas);
     } catch (error) {
         console.error('Spline scene failed to load:', error);
         loader.textContent = '3D preview unavailable';
@@ -58,7 +68,6 @@ export function initSplineScene(
     container.dataset.splineInit = 'true';
     container.innerHTML = createMarkup();
 
-    const root = container.querySelector('.spline-scene');
     const canvas = container.querySelector('.spline-scene__canvas');
     const loader = container.querySelector('.spline-scene__loader');
 
@@ -67,7 +76,7 @@ export function initSplineScene(
     const start = () => {
         if (started) return;
         started = true;
-        loadScene(root, canvas, loader, sceneUrl);
+        loadScene(canvas, loader, sceneUrl);
     };
 
     if ('IntersectionObserver' in window) {

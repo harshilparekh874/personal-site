@@ -160,7 +160,7 @@ a {
     -webkit-backdrop-filter: blur(25px);
     border-bottom: 1px solid var(--color-graphite-rail);
     transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.35s ease, border-color 0.35s ease;
-    --nav-toggle-width: 60px;
+    --nav-toggle-width: 40px;
     --nav-toggle-gap: 16px;
 }
 
@@ -227,17 +227,6 @@ a {
     gap: var(--spacing-20);
     justify-self: end;
     grid-column: 3;
-}
-
-.nav-theme-toggle {
-    position: absolute;
-    top: calc(env(safe-area-inset-top, 0px) + 50%);
-    right: max(clamp(1.25rem, 5vw, 2rem), env(safe-area-inset-right, 0px));
-    transform: translateY(-50%);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
 }
 
 .mobile-menu-btn {

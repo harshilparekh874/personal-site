@@ -26,7 +26,7 @@ const PROJECTS = [
         description: 'Physics sandbox · Collision dynamics',
         src: project3Img,
         ctaLink: 'https://github.com/harshilparekh874/Physics-Sim',
-        content: `An interactive physics playground for experimenting with variable gravity, elastic collisions, and custom shape dynamics. Tune parameters in real time and watch how kinetic systems evolve under different forces.`,
+        content: `An interactive physics playground for experimenting with variable gravity, elastic collisions, and custom shape dynamics. Adjust parameters in real time and watch how systems respond.`,
     },
     {
         title: 'Google Drive Clone',
@@ -47,7 +47,7 @@ const PROJECTS = [
         description: 'LLMs · Tool use · Interactive demo',
         src: project6Img,
         ctaLink: 'https://github.com/harshilparekh874/Function-Calling-Kitchen',
-        content: `An interactive cooking simulator built around LLM function calls. Chop, sauté, season, and plate ingredients through structured tool use, which makes multi-step agent workflows easy to follow.`,
+        content: `An interactive cooking simulator built around LLM function calls. Chop, sauté, season, and plate ingredients through structured tool use, with a clear view of how multi-step agents work.`,
     },
 ];
 

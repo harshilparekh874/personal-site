@@ -5,7 +5,7 @@ import { initVortex } from './vortex.js';
 import { initMagicCards, refreshMagicCardThemes } from './magic-card.js';
 import { initExpandableProjects } from './expandable-projects.js';
 import { initSpotlight } from './spotlight.js';
-import { initTheme } from './theme.js';
+import { initThemeSystem } from './animated-theme-toggler.js';
 import { initKineticText } from './kinetic-text.js';
 import { initSocialButtons } from './social-buttons.js';
 import { initSplineScene } from './spline-scene.js';
@@ -15,7 +15,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 document.documentElement.classList.add('js-ready');
 gsap.registerPlugin(ScrollTrigger);
 
-initTheme();
+initThemeSystem();
 initKineticText('.hero-name-line');
 initSocialButtons('#contact-socials');
 initSplineScene('#contact-spline');

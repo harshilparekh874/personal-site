@@ -12,11 +12,13 @@
     padding: 5px;
     width: 32px;
     height: 32px;
+    border-radius: 50%;
     color: var(--color-fog);
     text-decoration: none;
     cursor: pointer;
     transition: 300ms all ease-in-out;
     position: relative;
+    overflow: hidden;
 }
 
 .icons-social-media:hover {
@@ -28,7 +30,6 @@
     height: 32px;
     display: block;
     transition: 300ms all ease-in-out;
-    clip-path: circle(65%);
 }
 
 #linkedin:hover {
@@ -47,6 +48,7 @@
 }
 
 #medium {
+    width: 35px;
     height: 35px;
 }
 

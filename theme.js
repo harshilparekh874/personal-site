@@ -14,20 +14,5 @@ export function getStoredTheme() {
 export function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY, theme);
-
-    const input = document.getElementById('theme-toggle-input');
-    if (input) {
-        input.checked = theme === 'dark';
-    }
-
     window.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
-}
-
-export function initTheme() {
-    applyTheme(getStoredTheme());
-
-    const input = document.getElementById('theme-toggle-input');
-    input?.addEventListener('change', () => {
-        applyTheme(input.checked ? 'dark' : 'light');
-    });
 }

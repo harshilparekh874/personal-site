@@ -60,57 +60,7 @@
         </nav>
 
         <div class="nav-theme-toggle">
-            <label class="theme-toggle switch" for="theme-toggle-input" aria-label="Toggle day and night theme">
-                <input type="checkbox" id="theme-toggle-input" />
-                <span class="slider round">
-                    <span class="sun-moon">
-                        <svg id="light-ray-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 43" aria-hidden="true">
-                            <circle cx="21.5" cy="21.5" r="21.5" />
-                        </svg>
-                        <svg id="light-ray-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55" aria-hidden="true">
-                            <circle cx="27.5" cy="27.5" r="27.5" />
-                        </svg>
-                        <svg id="light-ray-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" aria-hidden="true">
-                            <circle cx="30" cy="30" r="30" />
-                        </svg>
-                        <span id="moon-dot-1" class="moon-dot"></span>
-                        <span id="moon-dot-2" class="moon-dot"></span>
-                        <span id="moon-dot-3" class="moon-dot"></span>
-                    </span>
-                    <svg id="cloud-1" class="cloud-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20" aria-hidden="true">
-                        <ellipse cx="20" cy="12" rx="18" ry="8" />
-                    </svg>
-                    <svg id="cloud-2" class="cloud-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 12" aria-hidden="true">
-                        <ellipse cx="10" cy="8" rx="9" ry="5" />
-                    </svg>
-                    <svg id="cloud-3" class="cloud-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 16" aria-hidden="true">
-                        <ellipse cx="15" cy="10" rx="14" ry="6" />
-                    </svg>
-                    <svg id="cloud-4" class="cloud-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20" aria-hidden="true">
-                        <ellipse cx="20" cy="12" rx="18" ry="8" />
-                    </svg>
-                    <svg id="cloud-5" class="cloud-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 12" aria-hidden="true">
-                        <ellipse cx="10" cy="8" rx="9" ry="5" />
-                    </svg>
-                    <svg id="cloud-6" class="cloud-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 16" aria-hidden="true">
-                        <ellipse cx="15" cy="10" rx="14" ry="6" />
-                    </svg>
-                    <span class="stars" aria-hidden="true">
-                        <svg id="star-1" class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <polygon points="10,1 12,7 19,7 13,11 15,18 10,14 5,18 7,11 1,7 8,7" />
-                        </svg>
-                        <svg id="star-2" class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
-                            <polygon points="5,0 6,3.5 10,3.5 6.8,5.7 8,10 5,7.8 2,10 3.2,5.7 0,3.5 4,3.5" />
-                        </svg>
-                        <svg id="star-3" class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
-                            <polygon points="6,0 7.2,4.2 12,4.2 8.2,6.8 9.6,12 6,9.2 2.4,12 3.8,6.8 0,4.2 4.8,4.2" />
-                        </svg>
-                        <svg id="star-4" class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-                            <polygon points="9,0 10.8,6.3 18,6.3 12.3,10.2 14.4,18 9,13.8 3.6,18 5.7,10.2 0,6.3 7.2,6.3" />
-                        </svg>
-                    </span>
-                </span>
-            </label>
+            <button id="animated-theme-toggler" type="button"></button>
         </div>
     </header>
 
@@ -119,15 +69,12 @@
             <div id="hero-spotlight" class="hero-spotlight" aria-hidden="true"></div>
             <div class="hero-inner container">
                 <div class="hero-copy">
-                    <a href="#projects" class="announcement-pill reveal">
-                        Building things that run fast <span class="pill-arrow">→</span>
-                    </a>
                     <h1 class="hero-name reveal">
                         <span class="hero-name-line kinetic-text">Harshil</span>
                         <span class="hero-name-line kinetic-text">Parekh</span>
                     </h1>
                     <p class="hero-subtext reveal">
-                        I build fast, reliable software and like keeping things simple.
+                        Software engineering student. I build reliable systems and keep the details intentional.
                     </p>
                     <div class="hero-actions reveal">
                         <a href="#projects" class="btn-primary-outline">View projects</a>
@@ -164,8 +111,8 @@
                         <img src="assets/profile.jpeg" alt="Harshil Parekh">
                     </div>
                     <div class="about-text reveal">
-                        <p class="about-lead">I'm a software engineering student who likes full-stack work, AI/ML, and quantum computing. Mostly I just enjoy building things that scale well and still make sense six months later.</p>
-                        <p class="about-body">I've worked on everything from WebGL physics sims to production mobile apps. I care about performance, clean architecture, and shipping work that holds up in the real world.</p>
+                        <p class="about-lead">I'm a software engineering student working across the full stack, with strong interests in AI/ML and quantum computing. I'm most at home building systems that perform well and stay clear as they grow.</p>
+                        <p class="about-body">I've shipped everything from WebGL physics simulations to production mobile apps. Performance, thoughtful architecture, and dependable delivery all matter to me.</p>
                     </div>
                 </div>
             </div>
@@ -176,7 +123,7 @@
                 <div class="section-header reveal">
                     <p class="section-eyebrow">Skills</p>
                     <h2 class="section-heading">Technical stack.</h2>
-                    <p class="section-desc">Drag cards off the pile, toss them around, or drop one in the slot to see what it is.</p>
+                    <p class="section-desc">Drag a card into the slot to see how I use each technology.</p>
                 </div>
                 <div class="stack-cards-wrap reveal">
                     <div class="stack-cards-actions">
@@ -246,7 +193,7 @@
                                     </div>
                                 </header>
                                 <div class="experience-card__body">
-                                    <p class="timeline-desc">Led development on a React Native and Firebase app with GPT-4 built in. Shipped a trust-tracking platform that improved engagement accuracy by 35% and cut latency by 40%.</p>
+                                    <p class="timeline-desc">Led development on a React Native and Firebase app with integrated GPT-4. Shipped a trust-tracking platform that improved engagement accuracy by 35% and cut latency by 40%.</p>
                                 </div>
                                 <footer class="experience-card__footer">
                                     <span class="timeline-date">Apr 2025 - Sep 2025</span>
@@ -269,7 +216,7 @@
                                     </div>
                                 </header>
                                 <div class="experience-card__body">
-                                    <p class="timeline-desc">Helped improve system reliability by securing customer accounts, speeding up support responses by 40%, and cutting downtime by 35%.</p>
+                                    <p class="timeline-desc">Strengthened system reliability by securing customer accounts, speeding up support responses by 40%, and reducing downtime by 35%.</p>
                                 </div>
                                 <footer class="experience-card__footer">
                                     <span class="timeline-date">Apr 2023 - Sep 2023</span>
@@ -286,8 +233,8 @@
                 <div class="contact-grid">
                     <div class="contact-copy">
                         <div class="section-header reveal">
-                            <h2 class="section-heading display-close">Let's build something extraordinary.</h2>
-                            <p class="section-desc">Happy to chat about internships, side projects, or anything interesting you're building.</p>
+                            <h2 class="section-heading display-close">Let's talk.</h2>
+                            <p class="section-desc">Open to internships, collaborations, and conversations about what you're building.</p>
                         </div>
                         <div class="contact-actions reveal">
                             <div class="contact-action-row">
