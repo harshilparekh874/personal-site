@@ -1325,7 +1325,8 @@ a {
 
 /* ── Contact ── */
 
-.contact-section {
+.contact-section.section {
+    padding: var(--spacing-96) 0 0;
     text-align: left;
 }
 
@@ -1333,7 +1334,18 @@ a {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--spacing-48);
-    align-items: center;
+    align-items: end;
+}
+
+.contact-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-copyright {
+    margin: var(--spacing-32) 0 0;
+    font-size: var(--text-caption);
+    color: var(--color-ash);
 }
 
 .contact-copy .section-header {
@@ -1358,29 +1370,38 @@ a {
     .contact-grid {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: var(--spacing-64);
-        align-items: start;
+        align-items: stretch;
+    }
+
+    .contact-copyright {
+        margin-top: auto;
+        padding-top: var(--spacing-24);
+    }
+
+    .contact-aside {
+        align-self: end;
+        height: fit-content;
+        margin-bottom: 0;
     }
 }
 
-/* ── Footer ── */
+@media (max-width: 899px) {
+    .contact-left {
+        display: contents;
+    }
 
-.site-footer {
-    padding: var(--spacing-40) 0;
-    margin-top: var(--spacing-48);
-    position: relative;
-    z-index: 1;
-    background: transparent;
-}
+    .contact-copy {
+        order: 1;
+    }
 
-.footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .contact-aside {
+        order: 2;
+    }
 
-.site-footer p {
-    font-size: var(--text-caption);
-    color: var(--color-ash);
+    .contact-copyright {
+        order: 3;
+        margin-top: var(--spacing-16);
+    }
 }
 
 /* ── Motion helpers ── */
@@ -1563,6 +1584,10 @@ html.js-ready .reveal {
         padding: var(--spacing-64) 0;
     }
 
+    .contact-section.section {
+        padding-top: var(--spacing-64);
+    }
+
     .section-header {
         margin-bottom: var(--spacing-40);
     }
@@ -1592,16 +1617,6 @@ html.js-ready .reveal {
 
     .contact-actions {
         width: 100%;
-    }
-
-    .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-16);
-    }
-
-    .site-footer {
-        padding-bottom: max(var(--spacing-40), env(safe-area-inset-bottom, 0px));
     }
 }
 

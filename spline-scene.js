@@ -19,6 +19,19 @@ function hideLoader(loader) {
     loader.classList.add('is-hidden');
 }
 
+function fitContactSceneHeight(scene) {
+    const width = scene.clientWidth;
+    if (!width) return;
+
+    const isDesktop = window.innerWidth >= 900;
+    const height = Math.min(
+        Math.round(width * (isDesktop ? 0.53 : 0.58)),
+        isDesktop ? 320 : 280
+    );
+
+    scene.style.setProperty('--spline-scene-height', `${height}px`);
+}
+
 function lockBodyLookAt(app) {
     const locked = BODY_LOCK_NAMES.map((name) => app.findObjectByName(name))
         .filter(Boolean)
@@ -47,9 +60,15 @@ async function loadScene(canvas, loader, sceneUrl) {
         const { Application } = await import('@splinetool/runtime');
         const app = new Application(canvas);
         await app.load(sceneUrl);
-        app.setZoom(1.45);
+        app.setZoom(window.innerWidth >= 900 ? 2.85 : 2.55);
         app.setGlobalEvents(true);
         lockBodyLookAt(app);
+
+        const scene = canvas.closest('.spline-scene');
+        if (scene) {
+            fitContactSceneHeight(scene);
+        }
+
         hideLoader(loader);
     } catch (error) {
         console.error('Spline scene failed to load:', error);
@@ -70,6 +89,12 @@ export function initSplineScene(
 
     const canvas = container.querySelector('.spline-scene__canvas');
     const loader = container.querySelector('.spline-scene__loader');
+    const scene = container.querySelector('.spline-scene');
+
+    if (scene) {
+        fitContactSceneHeight(scene);
+        window.addEventListener('resize', () => fitContactSceneHeight(scene));
+    }
 
     let started = false;
 
