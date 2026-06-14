@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/harshilparekh874/personal-site#readme",
   "dependencies": {
+    "@splinetool/runtime": "^1.12.97",
     "gsap": "^3.14.2",
     "rubiks-cube-solver": "^1.2.0",
     "simplex-noise": "^4.0.3",

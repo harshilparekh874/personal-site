@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="kinetic-text.css">
     <link rel="stylesheet" href="social-icons.css">
     <link rel="stylesheet" href="magic-card.css">
+    <link rel="stylesheet" href="spline-scene.css">
+    <link rel="preload" href="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" as="fetch" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -288,12 +290,15 @@
                             <p class="section-desc">Happy to chat about internships, side projects, or anything interesting you're building.</p>
                         </div>
                         <div class="contact-actions reveal">
-                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshilparekh874@gmail.com"
-                                target="_blank" rel="noopener" class="btn-primary-outline">Email me</a>
+                            <div class="contact-action-row">
+                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshilparekh874@gmail.com"
+                                    target="_blank" rel="noopener" class="btn-primary-outline">Email me</a>
+                                <div id="contact-socials" class="contact-social-icons"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-social-wrap reveal">
-                        <div id="contact-socials" class="contact-socials"></div>
+                    <div class="contact-aside reveal">
+                        <div id="contact-spline" class="contact-spline-host"></div>
                     </div>
                 </div>
             </div>

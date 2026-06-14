@@ -8,6 +8,7 @@ import { initSpotlight } from './spotlight.js';
 import { initTheme } from './theme.js';
 import { initKineticText } from './kinetic-text.js';
 import { initSocialButtons } from './social-buttons.js';
+import { initSplineScene } from './spline-scene.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -17,6 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 initTheme();
 initKineticText('.hero-name-line');
 initSocialButtons('#contact-socials');
+initSplineScene('#contact-spline');
 
 const siteRipple = initBackgroundRipple('site-ripple');
 window.addEventListener('themechange', () => {

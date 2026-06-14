@@ -1,130 +1,67 @@
-.contact-social-wrap {
+.contact-social-icons {
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 100%;
+    gap: var(--spacing-12);
+    flex-wrap: wrap;
 }
 
-.contact-socials {
-    display: grid;
-    grid-template-columns: repeat(2, 100px);
-    gap: clamp(1.25rem, 4vw, 2rem);
+.icons-social-media {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-}
-
-.contact-socials .button {
-    --social-bg: #5865f2;
-    cursor: pointer;
-    border: none;
-    background: var(--social-bg);
-    color: #fff;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-    display: grid;
-    place-content: center;
-    transition:
-        background 300ms,
-        transform 200ms;
-    font-weight: 600;
+    padding: 5px;
+    width: 32px;
+    height: 32px;
+    color: var(--color-fog);
     text-decoration: none;
-}
-
-.contact-socials .button__text {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    font-size: 10px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    animation: text-rotation 8s linear infinite;
-}
-
-.contact-socials .button__text > span {
-    position: absolute;
-    transform: rotate(calc(22deg * var(--index)));
-    inset: 7px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    transform-origin: center center;
-}
-
-.contact-socials .button__circle {
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
     position: relative;
-    z-index: 1;
-    width: 40px;
-    height: 40px;
-    overflow: hidden;
-    background: #212121;
+}
+
+.icons-social-media:hover {
+    translate: 0 -10px;
+}
+
+.icons-social-media svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+    transition: 300ms all ease-in-out;
+    clip-path: circle(65%);
+}
+
+#linkedin:hover {
+    background-color: rgb(137, 177, 219);
     color: #fff;
+}
+
+#github:hover {
+    background-color: rgb(180, 180, 180);
+    color: #24292f;
+}
+
+#instagram:hover {
+    background-color: rgb(221, 157, 189);
+    color: #fff;
+}
+
+#medium {
+    height: 35px;
+}
+
+#medium:hover {
+    background-color: rgb(143, 220, 186);
+    color: #1a1a1a;
+}
+
+.icons-social-media:focus-visible {
+    outline: 2px solid var(--color-pure-white);
+    outline-offset: 3px;
     border-radius: 50%;
 }
 
-.contact-socials .button__icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 18px;
-    height: 18px;
-    display: block;
-    transform: translate(-50%, -50%);
-    transition: transform 0.3s ease-in-out;
-}
-
-.contact-socials .social-button--github .button__icon--brand {
-    width: 19.5px;
-    height: 19.5px;
-}
-
-.contact-socials .button__icon--copy {
-    transform: translate(calc(-50% - 150%), calc(-50% + 150%));
-}
-
-.contact-socials .button:hover {
-    background: #000;
-    transform: scale(1.05);
-}
-
-.contact-socials .button:hover .button__icon--brand {
-    transform: translate(calc(-50% + 150%), calc(-50% - 150%));
-}
-
-.contact-socials .button:hover .button__icon--copy {
-    transition-delay: 0.1s;
-    transform: translate(-50%, -50%);
-}
-
-@keyframes text-rotation {
-    to {
-        rotate: 360deg;
-    }
-}
-
-.contact-socials .button:active {
-    transform: scale(0.95);
-}
-
-.contact-socials .button:focus-visible {
-    outline: 2px solid var(--color-pure-white);
-    outline-offset: 4px;
-}
-
-@media (min-width: 900px) {
-    .contact-socials {
-        justify-content: flex-end;
-    }
-}
-
-@media (max-width: 480px) {
-    .contact-socials {
-        grid-template-columns: repeat(2, min(100px, 42vw));
-    }
-
-    .contact-socials .button {
-        width: min(100px, 42vw);
-        height: min(100px, 42vw);
-    }
+[data-theme="light"] #github:hover {
+    background-color: rgb(60, 60, 60);
+    color: #fff;
 }
